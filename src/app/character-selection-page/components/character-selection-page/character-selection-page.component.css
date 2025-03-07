@@ -1,0 +1,86 @@
+.character-selection-container {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #fff;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+.character-card {
+  background: #454560;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(253, 183, 89, 0.2);
+  transition: transform 0.2s ease-in-out;
+  color: #fff;
+}
+
+.character-card:hover {
+  transform: scale(1.05);
+}
+
+.character-info h3 {
+  margin: 10px 0;
+  font-size: 20px;
+  color: #facc15;
+}
+
+.character-info p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #ddd;
+}
+
+.play-button {
+  margin-top: 10px;
+  background: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.play-button:hover {
+  background: #45a049;
+}
+
+/* Create New Character Card */
+.create-character-card {
+  background: #2d2d3a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.create-character-card:hover {
+  background: #3a3a4a;
+}
+
+.create-character-content h3 {
+  font-size: 40px;
+  margin: 0;
+  color: #4caf50;
+}
+
+.create-character-content p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #ddd;
+}

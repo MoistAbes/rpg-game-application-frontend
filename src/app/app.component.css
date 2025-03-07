@@ -1,0 +1,26 @@
+/* Make the sidebar fixed and take up full height */
+.sidebar {
+  background-color: #343a40;
+  color: white;
+  padding-top: 20px;
+  height: 100vh; /* Full height */
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+  padding: 0;
+}
+
+
+/* Make sure to collapse the sidebar on smaller screens */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}

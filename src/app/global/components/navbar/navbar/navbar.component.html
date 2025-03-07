@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-danger-subtle custom-navbar">
+  <div class="container-fluid">
+    <a *ngIf="!jwtService.hasToken()" class="navbar-brand" routerLink="/" >Rpg simulation</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+
+
+        <!-- Show Login and Register links only if the user is not logged in -->
+        <li *ngIf="!jwtService.hasToken()" class="nav-item">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+        <li *ngIf="!jwtService.hasToken()" class="nav-item">
+          <a class="nav-link" routerLink="/register">Register</a>
+        </li>
+
+      </ul>
+      <ul *ngIf="jwtService.hasToken()" class="navbar-nav ms-auto">
+        <li style="position: relative" class="nav-item">
+          <a style="padding: 0; margin: 0; font-size: 11px" (click)="toggleMenu($event)" class="nav-link cursor-pointer">{{ jwtService.getUsernameFromToken() }}</a>
+          <p style="padding: 0; margin: 0; font-size: 9px" *ngIf="characterLocalService.hasCharacterData()" class="nav-link cursor-pointer" (click)="toggleMenu($event)">Playing as {{ characterLocalService.getName() }}</p>
+
+          <!-- Dropdown Menu -->
+          <ul (mouseleave)="closeMenu($event)"  class="dropdown-menu dropdown-menu-custom" [class.show]="isMenuOpen" >
+            <li style="padding: 0; margin: 0; font-size: 11px" (click)="routeToCharacterSelection()"><a routerLink="/character-selection" class="dropdown-item cursor-pointer dropdown-item-custom">Change Character</a></li>
+            <li style="padding: 0; margin: 0; font-size: 11px" (click)="logout()"><a routerLink="/login" class="dropdown-item cursor-pointer dropdown-item-custom">Logout</a></li>
+            <li style="padding: 0; margin: 0; font-size: 11px" (click)="isMenuOpen = false"><a class="dropdown-item cursor-pointer dropdown-item-custom">Settings</a></li>
+          </ul>
+        </li>
+      </ul>
+<!--      <ul (mouseleave)="isMenuOpen = false" *ngIf="jwtService.hasToken()" class="navbar-nav ms-auto"> &lt;!&ndash; Use 'ms-auto' to align items to the right &ndash;&gt;-->
+<!--        <li style="position: relative" class="nav-item" [class.show]="isMenuOpen">-->
+<!--          <a style="padding: 0; margin: 0; font-size: 11px" (click)="toggleMenu($event)" class="nav-link cursor-pointer">{{ jwtService.getUsernameFromToken() }}</a> &lt;!&ndash; Display user's name &ndash;&gt;-->
+<!--          <p style="padding: 0; margin: 0; font-size: 9px" *ngIf="characterLocalService.hasCharacterData()" class="nav-link cursor-pointer" (click)="toggleMenu($event)">Playing as {{ characterLocalService.getName() }}</p>-->
+
+<!--          <ul class="dropdown-menu dropdown-menu-custom" [class.show]="isMenuOpen">-->
+<!--            <li style="padding: 0; margin: 0; font-size: 11px" (click)="routeToCharacterSelection()"><a routerLink="/character-selection" class="dropdown-item cursor-pointer dropdown-item-custom">Change Character</a></li>-->
+<!--            <li style="padding: 0; margin: 0; font-size: 11px" (click)="logout()"><a routerLink="/login" class="dropdown-item cursor-pointer dropdown-item-custom">Logout</a></li>-->
+<!--            <li style="padding: 0; margin: 0; font-size: 11px" (click)="isMenuOpen = false"><a class="dropdown-item cursor-pointer dropdown-item-custom">Settings</a></li>-->
+<!--          </ul>-->
+<!--        </li>-->
+<!--      </ul>-->
+
+    </div>
+  </div>
+</nav>

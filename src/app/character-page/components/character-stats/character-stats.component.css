@@ -1,0 +1,127 @@
+
+.character-stats-card {
+  max-width: 500px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+mat-card-header {
+  text-align: center;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+mat-card-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+mat-card-content p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+}
+
+mat-divider {
+  margin: 10px 0;
+}
+
+mat-card-footer {
+  padding: 16px 0;
+}
+
+.character-name-text {
+  color: #393939;
+}
+
+/*Equipment*/
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns */
+  grid-template-rows: repeat(2, 1fr); /* 2 rows */
+  gap: 5px; /* Smaller space between grid items */
+  width: 80%; /* Adjust width of the grid container */
+  max-width: 500px; /* Optional: limit the maximum width of the grid */
+  margin: 0 auto; /* Center the grid horizontally */
+}
+
+mat-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers content horizontally */
+  text-align: center; /* Ensures text alignment */
+}
+/*health bar*/
+.health-bar-container {
+  height: 20px;
+  background-color: #444;
+  overflow: hidden;
+  border: 2px solid #222;
+}
+
+.health-bar {
+  height: 100%;
+  background-color: #8f0004; /* Green for healthy */
+  transition: width 0.3s ease-in-out;
+
+}
+
+.health-text {
+  color: white; /* Makes text readable */
+  font-size: 12px !important;
+  font-weight: bold;
+  margin: 0;
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Center dynamically */
+
+  white-space: nowrap; /* Prevents text from breaking */
+  max-height: 100%;
+}
+
+/*experience bar*/
+.experience-bar-container {
+  height: 20px;
+  background-color: #444;
+  overflow: hidden;
+  border: 2px solid #222;
+}
+
+.experience-bar {
+  height: 100%;
+  background-color: #e8c200; /* Green for healthy */
+  transition: width 0.3s ease-in-out;
+
+}
+
+.experience-text {
+  color: white; /* Makes text readable */
+  font-size: 12px !important;
+  font-weight: bold;
+  margin: 0;
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Center dynamically */
+
+  white-space: nowrap; /* Prevents text from breaking */
+  max-height: 100%;
+}
+
+

@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns */
+  grid-template-rows: repeat(2, 1fr); /* 2 rows */
+  gap: 5px; /* Smaller space between grid items */
+  width: 80%; /* Adjust width of the grid container */
+  max-width: 500px; /* Optional: limit the maximum width of the grid */
+  margin: 0 auto; /* Center the grid horizontally */
+}
+
+
+

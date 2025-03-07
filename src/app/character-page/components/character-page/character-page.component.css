@@ -1,0 +1,14 @@
+.character-page-container {
+  display: flex;
+  width: 100%;
+}
+
+app-character-stats {
+  flex: 1;  /* Takes up 50% of the available width */
+  padding: 10px; /* Optional: Add some padding */
+}
+
+app-character-inventory {
+  flex: 1;  /* Takes up 50% of the available width */
+  padding: 10px; /* Optional: Add some padding */
+}

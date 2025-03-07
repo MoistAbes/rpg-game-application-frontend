@@ -1,1 +1,189 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+  background-color: #1e1e2e !important;  /* Ensures this rule is applied */
+  color: #fff !important;
+}
+
+#global-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/*INVENTORY - EQUIPMENT | START*/
+
+.item-slot {
+  border: 2px solid #8B4513; /* Brown-ish border color (saddle brown) */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9; /* Light background color for each slot */
+  aspect-ratio: 1; /* Maintain square aspect ratio */
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow for depth */
+  user-select: none;    /* Prevent text selection */
+}
+
+.item-slot:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+
+.item-slot p {
+  margin: 0;
+  font-size: 12px; /* Adjust the font size for the item name */
+  user-select: none;    /* Prevent text selection */
+
+}
+
+.item-icon {
+  cursor: pointer;
+  object-fit: contain; /* Prevents stretching while keeping aspect ratio */
+  user-select: none;    /* Prevent text selection */
+  -webkit-user-drag: none; /* Prevent dragging the image itself */
+}
+
+.drag-preview {
+  position: fixed;
+  pointer-events: none; /* Prevent interfering with mouse events */
+  color: white;
+  z-index: 1000;
+  user-select: none;    /* Prevent text selection */
+}
+
+
+.hover-preview {
+  position: fixed;
+  pointer-events: none;
+  background: linear-gradient(180deg, #e0e0e0, #c0c0c0); /* Silver/white gradient */
+  color: #2e2a25; /* Dark brownish text */
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 2px solid #8b5e3b; /* Brownish border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif; /* Modern, clean font */
+  min-width: 180px;
+  max-width: 250px;
+}
+
+.hover-preview-rare {
+  position: fixed;
+  pointer-events: none;
+  background: linear-gradient(180deg, #e0e0e0, #c0c0c0); /* Silver/white gradient */
+  color: #2e2a25; /* Dark brownish text */
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 2px solid #d6c300; /* Brownish border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif; /* Modern, clean font */
+  min-width: 180px;
+  max-width: 250px;
+}
+
+.hover-preview-epic {
+  position: fixed;
+  pointer-events: none;
+  background: linear-gradient(180deg, #e0e0e0, #c0c0c0); /* Silver/white gradient */
+  color: #2e2a25; /* Dark brownish text */
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 2px solid #ba2ef4; /* Brownish border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif; /* Modern, clean font */
+  min-width: 180px;
+  max-width: 250px;
+}
+
+.hover-preview-legendary {
+  position: fixed;
+  pointer-events: none;
+  background: linear-gradient(180deg, #e0e0e0, #c0c0c0); /* Silver/white gradient */
+  color: #2e2a25; /* Dark brownish text */
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 2px solid #b80043; /* Brownish border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif; /* Modern, clean font */
+  min-width: 180px;
+  max-width: 250px;
+}
+
+.hover-preview p,
+.hover-preview-rare p,
+.hover-preview-epic p,
+.hover-preview-legendary p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.hover-preview hr,
+.hover-preview-rare hr,
+.hover-preview-epic hr,
+.hover-preview-legendary hr {
+  border: none;
+  height: 1px;
+  background-color: #8b5e3b;
+  margin: 4px 0;
+}
+
+.item-stat {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5a4a3c; /* Muted brown for subtler details */
+}
+
+.item-description {
+  font-size: 10px;
+  font-weight: 600;
+  font-style: italic;
+  color: #5a4a3c; /* Muted brown for subtler details */
+}
+
+
+.unselectable {
+  user-select: none; /* Standard property */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/*INVENTORY - EQUIPMENT | END*/
+
