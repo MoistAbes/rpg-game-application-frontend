@@ -7,4 +7,5 @@ export class CharacterEquipmentModel {
   chest: ItemInstanceModel | undefined;
   gloves: ItemInstanceModel | undefined;
   boots: ItemInstanceModel | undefined;
+  mainHand: ItemInstanceModel | undefined;
 }

@@ -6,10 +6,11 @@ import {CharacterInventoryModel} from '../../../models/character-inventory-model
 import {ItemInstanceModel} from '../../../models/items/instance/Item-instance-model';
 import {ItemTypeService} from '../../../services/item-type.service';
 import {CharacterManagerService} from '../../../global/services/character-manager.service';
-import {ItemType} from '../../../enums/ItemType';
+import {getFormattedItemType, isWeapon, ItemType} from '../../../enums/ItemType';
 import {getFormattedItemRarity, ItemRarity} from '../../../enums/ItemRarity';
 import {ItemStatType} from '../../../enums/ItemStatType';
 import {getFormattedArmorType} from '../../../enums/ArmorType';
+import {getFormattedWeaponType} from '../../../enums/WeaponType';
 
 @Component({
   selector: 'app-character-inventory',
@@ -25,6 +26,11 @@ import {getFormattedArmorType} from '../../../enums/ArmorType';
   styleUrl: './character-inventory.component.css'
 })
 export class CharacterInventoryComponent implements OnInit {
+  protected readonly getFormattedArmorType = getFormattedArmorType;
+  protected readonly getFormattedItemRarity = getFormattedItemRarity;
+
+  protected readonly isWeapon = isWeapon;
+
   inventory: CharacterInventoryModel | undefined;
   readonly itemType: typeof ItemType = ItemType;
   //dragging item
@@ -184,6 +190,7 @@ export class CharacterInventoryComponent implements OnInit {
 
   }
 
-  protected readonly getFormattedArmorType = getFormattedArmorType;
-  protected readonly getFormattedItemRarity = getFormattedItemRarity;
+
+  protected readonly getFormattedWeaponType = getFormattedWeaponType;
+  protected readonly getFormattedItemType = getFormattedItemType;
 }

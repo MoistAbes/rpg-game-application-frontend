@@ -11,6 +11,11 @@ import {ArmorItemInstanceModel} from '../models/items/instance/armor-item-instan
 import {EquipmentItemInstanceModel} from '../models/items/instance/equipment-item-instance-model';
 import {ItemRarity} from '../enums/ItemRarity';
 import {ArmorType} from '../enums/ArmorType';
+import {SwordItemInstanceModel} from '../models/items/instance/sword-item-instance-model';
+import {WeaponItemInstanceModel} from '../models/items/instance/weapon-item-instance-model';
+import {AxeItemInstanceModel} from '../models/items/instance/axe-item-instance-model';
+import {WeaponItemTemplate} from '../models/items/template/weapon-item-template';
+import {WeaponType} from '../enums/WeaponType';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +50,36 @@ export class ItemTypeService {
       case ItemType.BOOTS_ITEM_INSTANCE:
         value = (itemInstance as BootsItemInstanceModel).bootsTemplate![property];
         break;
+      case ItemType.SWORD_ITEM_INSTANCE:
+        value = (itemInstance as SwordItemInstanceModel).swordTemplate![property];
+        break;
+      case ItemType.AXE_ITEM_INSTANCE:
+        value = (itemInstance as AxeItemInstanceModel).axeTemplate![property];
+        break;
+      default:
+        console.error(`Unknown type: ${itemInstance.type}`);
+        return defaultValue;
+    }
+
+    return typeof value === 'string' ? value : defaultValue;
+  }
+
+  private getWeaponProperty<T extends keyof WeaponItemTemplate>(
+    itemInstance: ItemInstanceModel | undefined,
+    property: T,
+    defaultValue: string
+  ): string {
+    if (!itemInstance) return defaultValue;
+
+    let value: unknown;
+
+    switch (itemInstance.type) {
+      case ItemType.SWORD_ITEM_INSTANCE:
+        value = (itemInstance as SwordItemInstanceModel).swordTemplate![property];
+        break;
+      case ItemType.AXE_ITEM_INSTANCE:
+        value = (itemInstance as AxeItemInstanceModel).axeTemplate![property];
+        break;
       default:
         console.error(`Unknown type: ${itemInstance.type}`);
         return defaultValue;
@@ -63,11 +98,23 @@ export class ItemTypeService {
   public getArmorValueProperty(itemInstance: ItemInstanceModel): number {
 
     let armorValue: number | undefined;
-
     armorValue = (itemInstance as ArmorItemInstanceModel).armorValue
 
     if (armorValue) {
       return armorValue
+    }else {
+      return 0
+    }
+
+  }
+
+  public getDamageValueProperty(itemInstance: ItemInstanceModel): number {
+
+    let damageValue: number | undefined;
+    damageValue = (itemInstance as WeaponItemInstanceModel).damageValue
+
+    if (damageValue) {
+      return damageValue
     }else {
       return 0
     }
@@ -87,8 +134,13 @@ export class ItemTypeService {
   }
 
   getItemArmorType(itemInstance: ItemInstanceModel): ArmorType {
-    console.log("get item armor type: ", itemInstance);
+    // console.log("get item armor type: ", itemInstance);
     return (itemInstance as ArmorItemInstanceModel).armorType! as ArmorType
+  }
+
+  getWeaponType(itemInstance: ItemInstanceModel): WeaponType {
+    return this.getWeaponProperty(itemInstance, 'weaponType', 'no weapon type found') as WeaponType;
+
   }
 
 }

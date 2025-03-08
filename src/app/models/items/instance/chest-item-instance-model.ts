@@ -4,6 +4,6 @@ import {ChestItemTemplateModel} from '../template/chest-item-template-model';
 export class ChestItemInstanceModel extends ArmorItemInstanceModel{
 
   chestTemplate: ChestItemTemplateModel | undefined;
-  override type: string = 'HelmetItemInstanceModel';  // Unique type identifier
+  // override type: string = 'HelmetItemInstanceModel';  // Unique type identifier
 
 }
