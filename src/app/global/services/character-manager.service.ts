@@ -8,7 +8,7 @@ import {InventoryApiService} from '../../services/api/inventory-api.service';
 import {EquipmentApiService} from '../../services/api/equipment-api.service';
 import {InventorySlotModel} from '../../models/inventory-slot-model';
 import {ToastrService} from 'ngx-toastr';
-import {ItemType} from '../../enums/ItemType';
+import {isWeapon, ItemType} from '../../enums/ItemType';
 import {CharacterStatsApiService} from '../../services/api/character-stats-api.service';
 
 @Injectable({
@@ -37,7 +37,6 @@ export class CharacterManagerService {
 
     //check if item is valid type to equip in this lot
     if (this.isValidSlotForItem(itemType, slotType)) {
-
 
       //checking if equipment slot is empty
       if (equipmentItemInstance == null) {
@@ -94,6 +93,11 @@ export class CharacterManagerService {
 
   // Check if the item is valid for the given slot
   private isValidSlotForItem(itemType: ItemType, slotType: ItemType): boolean {
+    console.log("item type: ", itemType + " slot type: " + slotType)
+
+    if (slotType == ItemType.WEAPON_ITEM_INSTANCE) {
+      return isWeapon(itemType);
+    }
     return itemType === slotType; // Check if the item type matches the slot type
   }
 
@@ -112,9 +116,13 @@ export class CharacterManagerService {
     const currentCharacter: CharacterModel | null = this.getCharacter();
     if (!currentCharacter || !currentCharacter.equipment) return;
 
+    //check if its weapon
+    if (isWeapon(itemType)){
+      itemType = ItemType.WEAPON_ITEM_INSTANCE
+    }
+
     switch (itemType) {
       case ItemType.HELMET_ITEM_INSTANCE: {
-        console.log("equipping helmet item: ", this.draggedItem?.item)
         currentCharacter.equipment.helmet = this.draggedItem!.item;
         break;
       }
@@ -130,8 +138,12 @@ export class CharacterManagerService {
         currentCharacter.equipment.boots = this.draggedItem!.item;
         break;
       }
+      case ItemType.WEAPON_ITEM_INSTANCE: {
+        currentCharacter.equipment.mainHand = this.draggedItem!.item;
+        break;
+      }
       default: {
-        this.toastService.warning("Cannot equip this item here");
+        this.toastService.warning("Cannot equip this item here: ", itemType);
         return;
       }
     }
@@ -144,7 +156,15 @@ export class CharacterManagerService {
     const currentCharacter: CharacterModel | null = this.getCharacter();
     if (!currentCharacter || !currentCharacter.equipment) return;
 
-    switch (inventoryItemInstance?.type) {
+    console.log("EQUIP INVENTORY ITEM: ", inventoryItemInstance?.type)
+
+    //check if item type belongs to weapons
+    let inventoryItemType: ItemType = inventoryItemInstance!.type!;
+    if (isWeapon(inventoryItemType)) {
+      inventoryItemType = ItemType.WEAPON_ITEM_INSTANCE
+    }
+
+    switch (inventoryItemType) {
       case ItemType.HELMET_ITEM_INSTANCE: {
         console.log("equipping helmet item: ", inventoryItemInstance)
         currentCharacter.equipment.helmet = inventoryItemInstance;
@@ -162,6 +182,10 @@ export class CharacterManagerService {
         currentCharacter.equipment.boots = inventoryItemInstance;
         break;
       }
+      case ItemType.WEAPON_ITEM_INSTANCE: {
+        currentCharacter.equipment.mainHand = inventoryItemInstance;
+        break;
+      }
       default: {
         this.toastService.warning("Cannot equip this item here");
         return;
@@ -177,6 +201,13 @@ export class CharacterManagerService {
     const currentCharacter = this.getCharacter();
     if (!currentCharacter || !currentCharacter.equipment) return;
 
+
+    console.log("SWAPPING ITEM FROM INVENTORY TO EQUIPMENT: ", itemType)
+
+    //check if its weapon type
+    if (isWeapon(itemType)) {
+      itemType = ItemType.WEAPON_ITEM_INSTANCE
+    }
 
     switch (itemType) {
       case ItemType.HELMET_ITEM_INSTANCE: {
@@ -197,6 +228,11 @@ export class CharacterManagerService {
       case ItemType.BOOTS_ITEM_INSTANCE: {
         currentCharacter.inventory!.inventorySlots[this.draggedItem!.index].itemInstance = currentCharacter.equipment.boots ?? null
         currentCharacter.equipment.boots = this.draggedItem!.item;
+        break;
+      }
+      case ItemType.WEAPON_ITEM_INSTANCE: {
+        currentCharacter.inventory!.inventorySlots[this.draggedItem!.index].itemInstance = currentCharacter.equipment.mainHand ?? null
+        currentCharacter.equipment.mainHand = this.draggedItem!.item;
         break;
       }
       default: {
@@ -237,24 +273,35 @@ export class CharacterManagerService {
   // Handle equipping an item from equipment into inventory
   private handleEquipmentToInventorySwap(currentCharacter: CharacterModel, targetSlot: InventorySlotModel, targetItem: ItemInstanceModel | null) {
 
+    //check if its weapon type
+    let draggedItemType = this.draggedItem!.item.type!;
+    if (isWeapon(draggedItemType)){
+      draggedItemType = ItemType.WEAPON_ITEM_INSTANCE
+    }
+
     //checking if inventory slot is taken
     if (targetItem) {
       console.log("inventory slot is taken")
+
+      //check if its weapon
+      if (isWeapon(targetItem.type!)){
+
+      }
+
+      console.log("dragged item: ", this.draggedItem!.item.type! + " | targer Item: " + targetItem.type);
 
       //check if items are of matching type
       if (this.isSameEquipmentType(this.draggedItem!.item, targetItem)) {
         console.log("items are of matching type")
 
         //call api
-        this.equipmentApiService.unequipItemToTakenSlot(targetSlot.id, this.getCharacter()!.equipment!.id, this.draggedItem!.item.type)
+        this.equipmentApiService.unequipItemToTakenSlot(targetSlot.id, this.getCharacter()!.equipment!.id, draggedItemType.toString())
           .subscribe({
             next: () => {
               //swap items
               this.swapWithEquipment(currentCharacter, targetItem, targetSlot);
               console.log("equipment after swap: ", currentCharacter.equipment)
               console.log("inventory after swap: ", currentCharacter.inventory)
-
-
             },
             error: err => console.log(err.message),
             complete: () => this.loadCharacterStats(this.getCharacter()!.id)
@@ -268,15 +315,15 @@ export class CharacterManagerService {
       //inventory slot is empty
 
 
+
       // Call API to remove item from equipment
       this.equipmentApiService
-        .unequipItemToEmptySlot(targetSlot.id, currentCharacter.equipment!.id, this.draggedItem!.item.type)
+        .unequipItemToEmptySlot(targetSlot.id, currentCharacter.equipment!.id, draggedItemType.toString())
         .subscribe({
           next: () => {
             //unequip item to inventory
-            this.removeItemFromEquipment(this.draggedItem!.item.type);
+            this.removeItemFromEquipment(draggedItemType.toString());
             targetSlot.itemInstance = this.draggedItem!.item;
-
 
           },
           error: err => console.log(err.message),
@@ -312,21 +359,38 @@ export class CharacterManagerService {
     })
   }
 
+  //old version
   // checks if 2 items are of the same type
+  // private isSameEquipmentType(itemA: ItemInstanceModel, itemB: ItemInstanceModel): boolean {
+  //   if (!itemA || !itemB) return false;
+  //
+  //   const equipmentMapping: Record<ItemType, ItemType> = {
+  //     [ItemType.HELMET_ITEM_INSTANCE]: ItemType.HELMET_ITEM_INSTANCE,
+  //     [ItemType.BOOTS_ITEM_INSTANCE]: ItemType.BOOTS_ITEM_INSTANCE,
+  //     [ItemType.GLOVES_ITEM_INSTANCE]: ItemType.GLOVES_ITEM_INSTANCE,
+  //     [ItemType.CHEST_ITEM_INSTANCE]: ItemType.CHEST_ITEM_INSTANCE,
+  //     [ItemType.ARMOR_ITEM_INSTANCE]: ItemType.ARMOR_ITEM_INSTANCE,
+  //     [ItemType.COMMON_ITEM_INSTANCE]: ItemType.COMMON_ITEM_INSTANCE,
+  //     [ItemType.WEAPON_ITEM_INSTANCE]: ItemType.WEAPON_ITEM_INSTANCE,
+  //     [ItemType.SWORD_ITEM_INSTANCE]: ItemType.SWORD_ITEM_INSTANCE,
+  //     [ItemType.AXE_ITEM_INSTANCE]: ItemType.AXE_ITEM_INSTANCE,
+  //
+  //     // Add other equipment mappings here
+  //   };
+  //
+  //   return equipmentMapping[itemA.type as ItemType] === (itemB.type as ItemType);
+  // }
+  //new version
   private isSameEquipmentType(itemA: ItemInstanceModel, itemB: ItemInstanceModel): boolean {
     if (!itemA || !itemB) return false;
 
-    const equipmentMapping: Record<ItemType, ItemType> = {
-      [ItemType.HELMET_ITEM_INSTANCE]: ItemType.HELMET_ITEM_INSTANCE,
-      [ItemType.BOOTS_ITEM_INSTANCE]: ItemType.BOOTS_ITEM_INSTANCE,
-      [ItemType.GLOVES_ITEM_INSTANCE]: ItemType.GLOVES_ITEM_INSTANCE,
-      [ItemType.CHEST_ITEM_INSTANCE]: ItemType.CHEST_ITEM_INSTANCE,
-      [ItemType.ARMOR_ITEM_INSTANCE]: ItemType.ARMOR_ITEM_INSTANCE,
-      [ItemType.COMMON_ITEM_INSTANCE]: ItemType.COMMON_ITEM_INSTANCE,
-      // Add other equipment mappings here
-    };
+    // Check if both items are weapons
+    if (isWeapon(itemA.type!) && isWeapon(itemB.type!)) {
+      return true;
+    }
 
-    return equipmentMapping[itemA.type as ItemType] === (itemB.type as ItemType);
+    // Otherwise, check if they are exactly the same type
+    return itemA.type === itemB.type;
   }
 
 // Swap an inventory item with equipment
@@ -376,6 +440,10 @@ export class CharacterManagerService {
       }
       case ItemType.BOOTS_ITEM_INSTANCE : {
         currentCharacter.equipment.boots = undefined;
+        break;
+      }
+      case ItemType.WEAPON_ITEM_INSTANCE : {
+        currentCharacter.equipment.mainHand = undefined;
         break;
       }
     }

@@ -6,11 +6,12 @@ import {MatCardContent, MatCardHeader, MatCardModule} from '@angular/material/ca
 import {ItemTypeService} from '../../../services/item-type.service';
 import {ItemInstanceModel} from '../../../models/items/instance/Item-instance-model';
 import {CharacterManagerService} from '../../../global/services/character-manager.service';
-import {ItemType} from '../../../enums/ItemType';
+import {getFormattedItemType, isWeapon, ItemType} from '../../../enums/ItemType';
 import {getFormattedItemRarity, ItemRarity} from '../../../enums/ItemRarity';
 import {ItemStatType} from '../../../enums/ItemStatType';
 import {InventorySlotModel} from '../../../models/inventory-slot-model';
 import {getFormattedArmorType} from '../../../enums/ArmorType';
+import {getFormattedWeaponType} from '../../../enums/WeaponType';
 
 @Component({
   selector: 'app-character-stats',
@@ -38,7 +39,7 @@ export class CharacterStatsComponent implements OnInit {
   dragPreviewY: number = -9999;
   isDragging: boolean = false;
 
-  startingType: string = ''
+  startingType: ItemType | undefined
 
 
   hoverItem: ItemInstanceModel | undefined;
@@ -63,9 +64,8 @@ export class CharacterStatsComponent implements OnInit {
   onDrop(event: DragEvent, slotType: ItemType, equipmentItemInstance: ItemInstanceModel | undefined) {
     event.preventDefault();
 
-
     if (this.characterManager.getDraggedItem()?.draggingFrom == 'inventory') {
-      console.log("items are not the same")
+      console.log("item is from inventory")
       this.characterManager.equipDraggedItemToEquipmentSlot(slotType, equipmentItemInstance);
     }
 
@@ -208,4 +208,7 @@ export class CharacterStatsComponent implements OnInit {
 
   protected readonly getFormattedItemRarity = getFormattedItemRarity;
   protected readonly getFormattedArmorType = getFormattedArmorType;
+  protected readonly isWeapon = isWeapon;
+  protected readonly getFormattedWeaponType = getFormattedWeaponType;
+  protected readonly getFormattedItemType = getFormattedItemType;
 }

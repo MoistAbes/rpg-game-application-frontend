@@ -100,6 +100,38 @@
   <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
        *ngIf="hoveredSlot != null &&
         hoveredSlot.itemInstance != null &&
+        hoveredSlot.itemInstance.type == itemType.GLOVES_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoveredSlot.itemInstance.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoveredSlot.itemInstance))}}</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoveredSlot.itemInstance)}}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoveredSlot.itemInstance.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType)}} {{itemStat.value}}</p>
+  </div>
+
+<!--  WEAPON HOVER TEST-->
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
+       *ngIf="hoveredSlot != null &&
+        hoveredSlot.itemInstance != null &&
+        isWeapon(hoveredSlot.itemInstance.type!)"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoveredSlot.itemInstance.itemRarity!)}} {{getFormattedWeaponType(itemTypeService.getWeaponType(hoveredSlot.itemInstance))}} {{getFormattedItemType(hoveredSlot.itemInstance.type!)}}</p>
+    <hr>
+    <p class="item-stat">Damage: {{ itemTypeService.getDamageValueProperty(hoveredSlot.itemInstance)}}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoveredSlot.itemInstance.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType)}} {{itemStat.value}}</p>
+  </div>
+
+
+<!--  WEAPON HOVER TEST-->
+
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
+       *ngIf="hoveredSlot != null &&
+        hoveredSlot.itemInstance != null &&
         hoveredSlot.itemInstance.type == itemType.COMMON_ITEM_INSTANCE"
        [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
     <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
