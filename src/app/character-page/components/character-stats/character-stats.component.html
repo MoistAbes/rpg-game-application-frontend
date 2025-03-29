@@ -27,6 +27,11 @@
                  (mouseenter)="onHoverMouseEnter($event,character.equipment.helmet)"
                  (mouseleave)="onHoverEnd()">
 
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[0]">
+                <div class="spinner"></div>
+              </div>
+
 
               <img *ngIf="character.equipment.helmet"
                    [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.helmet)"
@@ -34,7 +39,8 @@
                    width="64"
                    height="64"
                    class="item-icon"
-                   priority>
+                   priority
+                   (load)="onEquipmentItemImgLoad(0)">
             </div>
           </div>
           <div class="col-4">
@@ -55,13 +61,19 @@
                  (mouseenter)="onHoverMouseEnter($event,character.equipment.gloves)"
                  (mouseleave)="onHoverEnd()">
 
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[2]">
+                <div class="spinner"></div>
+              </div>
+
               <img *ngIf="character.equipment.gloves"
                    [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.gloves)"
                    alt="{{ itemTypeService.getItemName(character.equipment.gloves) }} icon"
                    width="64"
                    height="64"
                    class="item-icon"
-                   priority>
+                   priority
+                   (load)="onEquipmentItemImgLoad(2)">
             </div>
           </div>
           <div class="col-sm">
@@ -77,14 +89,21 @@
                  (mouseenter)="onHoverMouseEnter($event,character.equipment.chest)"
                  (mouseleave)="onHoverEnd()">
 
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[1]">
+                <div class="spinner"></div>
+              </div>
+
               <img *ngIf="character.equipment.chest"
                    [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.chest)"
                    alt="{{ itemTypeService.getItemName(character.equipment.chest) }} icon"
                    width="64"
                    height="64"
                    class="item-icon"
-                   priority>
-            </div>      </div>
+                   priority
+                   (load)="onEquipmentItemImgLoad(1)">
+            </div>
+          </div>
           <div class="col-sm">
           </div>
         </div>
@@ -105,13 +124,19 @@
                  (mouseenter)="onHoverMouseEnter($event,character.equipment.boots)"
                  (mouseleave)="onHoverEnd()">
 
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[3]">
+                <div class="spinner"></div>
+              </div>
+
               <img *ngIf="character.equipment.boots"
                    [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.boots)"
                    alt="{{ itemTypeService.getItemName(character.equipment.boots) }} icon"
                    width="64"
                    height="64"
                    class="item-icon"
-                   priority>
+                   priority
+                   (load)="onEquipmentItemImgLoad(3)">
             </div>
           </div>
           <div class="col-sm">
@@ -132,13 +157,19 @@
                  (mouseenter)="onHoverMouseEnter($event,character.equipment.mainHand)"
                  (mouseleave)="onHoverEnd()">
 
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[4]">
+                <div class="spinner"></div>
+              </div>
+
               <img *ngIf="character.equipment.mainHand"
                    [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.mainHand)"
                    alt="{{ itemTypeService.getItemName(character.equipment.mainHand) }} icon"
                    width="64"
                    height="64"
                    class="item-icon"
-                   priority>
+                   priority
+                   (load)="onEquipmentItemImgLoad(4)">
             </div>
           </div>
           <div class="col-sm">

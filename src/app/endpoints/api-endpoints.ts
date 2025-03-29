@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
     GET_ALL_BY_USER: "characters/get-all-by-user/",
     GET_CHARACTER: "characters/get-character/",
     GET_CHARACTER_STATS: "characters/stats/get-by-character-id/",
+    UPDATE_CHARACTER_CURRENT_HEALTH: "characters/stats/current-health/",
   },
   INVENTORY_SERVICE: {
     GET_INVENTORY: "inventory-service/inventories/get-inventory/",
@@ -17,5 +18,16 @@ export const API_ENDPOINTS = {
     UNEQUIP_ITEM_TO_TAKEN_SLOT: "inventory-service/equipments/unequip-item-to-taken-slot/",
     EQUIP_ITEM_TO_EMPTY_SLOT: "inventory-service/equipments/equip-item-to-empty-slot/",
     EQUIP_ITEM_TO_TAKEN_SLOT: "inventory-service/equipments/equip-item-to-taken-slot/",
+    DELETE_ITEM: "inventory-service/inventories/delete-item/",
   },
+  ZONE_SERVICE: {
+    GET_ZONES: "zone-service/zones/get-all"
+  },
+  ENEMY_SERVICE: {
+    GENERATE_ENEMY: "enemy-service/enemy-instance/generate-enemy-instance",
+    GET_ENEMY_TEMPLATE_BY_TYPE_AND_RANK: "enemy-service/enemy-template/get-all/type/tier"
+  },
+  COMBAT_SERVICE: {
+    START_COMBAT: "combat-service/combat/start"
+  }
 };

@@ -22,4 +22,8 @@ export class CharacterStatsApiService {
 
     return this.http.get<CharacterStats>(url, {headers})
   }
+
+  public updateCharacterCurrentHealth(characterStatsId: number, currentHealth: number): Observable<any> {
+    return this.http.put<any>(this.apiUrl + API_ENDPOINTS.CHARACTER_SERVICE.UPDATE_CHARACTER_CURRENT_HEALTH + characterStatsId + "/" + currentHealth, {});
+  }
 }

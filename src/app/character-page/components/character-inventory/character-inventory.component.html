@@ -14,7 +14,15 @@
        (mouseup)="onMouseUpHover($event, slot)"
        (mousemove)="onHoverMouseMove($event,slot)"
        (mouseenter)="onHoverMouseEnter($event,slot)"
-       (mouseleave)="onHoverEnd()">
+       (mouseleave)="onHoverEnd()"
+
+       (contextmenu)="onRightClick($event, slot)">
+
+
+    <!--item image loader-->
+    <div class="container-loader" *ngIf="itemsImagesLoadingStatusList[i]">
+      <div class="spinner"></div>
+    </div>
 
     <!-- Render helmet item -->
     <img *ngIf="slot.itemInstance"
@@ -23,7 +31,8 @@
          width="64"
          height="64"
          class="item-icon"
-         priority>
+         priority
+         (load)="onInventoryItemImgLoad(i)">
   </div>
 
   <!-- Custom drag preview -->

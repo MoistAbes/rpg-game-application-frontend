@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@ng-select/ng-select/themes/default.theme.css";
 html, body {
   height: 100%;
   margin: 0;
@@ -24,6 +25,18 @@ body {
   z-index: 9999;
 }
 
+.container-loader {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Semi-transparent dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Lower z-index than global loader */
+}
+
+
 .spinner {
   width: 50px;
   height: 50px;
@@ -45,6 +58,7 @@ body {
 /*INVENTORY - EQUIPMENT | START*/
 
 .item-slot {
+  position: relative;
   border: 2px solid #8B4513; /* Brown-ish border color (saddle brown) */
   border-radius: 8px; /* Optional: Add rounded corners */
   padding: 0;
@@ -186,4 +200,7 @@ body {
 }
 
 /*INVENTORY - EQUIPMENT | END*/
+
+
+/* MODAL */
 

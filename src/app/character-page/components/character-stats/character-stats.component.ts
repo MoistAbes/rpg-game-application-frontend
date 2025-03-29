@@ -12,6 +12,7 @@ import {ItemStatType} from '../../../enums/ItemStatType';
 import {InventorySlotModel} from '../../../models/inventory-slot-model';
 import {getFormattedArmorType} from '../../../enums/ArmorType';
 import {getFormattedWeaponType} from '../../../enums/WeaponType';
+import {CharacterEquipmentModel} from '../../../models/character-equipment-model';
 
 @Component({
   selector: 'app-character-stats',
@@ -46,15 +47,45 @@ export class CharacterStatsComponent implements OnInit {
   hoverPreviewX: number = 0;
   hoverPreviewY: number = 0;
 
+  isItemImgLoadedList: boolean[] = []
+
   constructor(protected itemTypeService: ItemTypeService,
               private characterManager: CharacterManagerService,
               private cdRef: ChangeDetectorRef) {
   }
 
+
+
   ngOnInit(): void {
     this.characterManager.character$.subscribe(character => {
       this.character = character;
+      console.log("CHARACTER: ", this.character);
+
+      if (this.isItemImgLoadedList.length == 0 && this.character != null && this.character.equipment) {
+        this.setIsItemImgLoadedList();
+      }
     });
+
+
+  }
+
+  setIsItemImgLoadedList() {
+
+    const equipmentSlots: Array<keyof CharacterEquipmentModel> = ['helmet', 'chest', 'gloves', 'boots', 'mainHand'];
+    console.log('test: ', this.character!.equipment![equipmentSlots[0]]);
+    console.log('test: ', this.character!.equipment![equipmentSlots[1]]);
+    console.log('test: ', this.character!.equipment![equipmentSlots[2]]);
+    console.log('test: ', this.character!.equipment![equipmentSlots[3]]);
+    console.log('test: ', this.character!.equipment![equipmentSlots[4]]);
+
+
+    this.isItemImgLoadedList = equipmentSlots.map(slot =>
+      !this.character?.equipment?.[slot]
+    );
+
+
+    console.log("isItemImgLoadedList: ", this.isItemImgLoadedList);
+
   }
 
   onDragOver(event: DragEvent) {
@@ -65,7 +96,6 @@ export class CharacterStatsComponent implements OnInit {
     event.preventDefault();
 
     if (this.characterManager.getDraggedItem()?.draggingFrom == 'inventory') {
-      console.log("item is from inventory")
       this.characterManager.equipDraggedItemToEquipmentSlot(slotType, equipmentItemInstance);
     }
 
@@ -99,7 +129,6 @@ export class CharacterStatsComponent implements OnInit {
   }
 
   onMouseDownHover() {
-    console.log("mouse down")
     this.hoverItem = undefined;
     this.isDragging = true
   }
@@ -134,7 +163,6 @@ export class CharacterStatsComponent implements OnInit {
 
   onMouseUpHover(event: MouseEvent ,itemInstance: ItemInstanceModel | undefined) {
 
-    console.log("on mouse up...")
     if (itemInstance != undefined) {
       this.hoverPreviewX = event.clientX + 25;  // X position of the mouse
       this.hoverPreviewY = event.clientY - 25;  // Y position of the mouse
@@ -211,4 +239,10 @@ export class CharacterStatsComponent implements OnInit {
   protected readonly isWeapon = isWeapon;
   protected readonly getFormattedWeaponType = getFormattedWeaponType;
   protected readonly getFormattedItemType = getFormattedItemType;
+
+  onEquipmentItemImgLoad(equipmentIndex: number) {
+    console.log('equipment item image loaded: ', equipmentIndex);
+
+    this.isItemImgLoadedList[equipmentIndex] = true;
+  }
 }
