@@ -23,8 +23,10 @@ export class InventoryApiService {
   moveItem(prevPosition: number, newPosition: number, inventoryId: number) {
 
     const headers = new HttpHeaders().set('X-Skip-Loading', 'true');
-
-
     return this.http.put<void>(`${this.apiUrl}${API_ENDPOINTS.INVENTORY_SERVICE.MOVE_ITEM}` + prevPosition + "/" + newPosition + "/" + inventoryId, {}, {headers});
+  }
+
+  deleteItemFromInventory(inventorySlotId: number ,itemInstanceId: number): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + API_ENDPOINTS.INVENTORY_SERVICE.DELETE_ITEM + inventorySlotId + "/" + itemInstanceId);
   }
 }

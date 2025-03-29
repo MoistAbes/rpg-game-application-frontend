@@ -11,6 +11,7 @@ import {getFormattedItemRarity, ItemRarity} from '../../../enums/ItemRarity';
 import {ItemStatType} from '../../../enums/ItemStatType';
 import {getFormattedArmorType} from '../../../enums/ArmorType';
 import {getFormattedWeaponType} from '../../../enums/WeaponType';
+import {InventoryApiService} from '../../../services/api/inventory-api.service';
 
 @Component({
   selector: 'app-character-inventory',
@@ -28,6 +29,8 @@ import {getFormattedWeaponType} from '../../../enums/WeaponType';
 export class CharacterInventoryComponent implements OnInit {
   protected readonly getFormattedArmorType = getFormattedArmorType;
   protected readonly getFormattedItemRarity = getFormattedItemRarity;
+  protected readonly getFormattedWeaponType = getFormattedWeaponType;
+  protected readonly getFormattedItemType = getFormattedItemType;
 
   protected readonly isWeapon = isWeapon;
 
@@ -46,16 +49,33 @@ export class CharacterInventoryComponent implements OnInit {
   hoverPreviewX: number = 0;
   hoverPreviewY: number = 0;
 
+  //item image loaders
+  itemsImagesLoadingStatusList: boolean[] = [];
+
   constructor(private characterManagerService: CharacterManagerService,
               protected itemTypeService: ItemTypeService,
               private characterManager: CharacterManagerService,
-              private cdRef: ChangeDetectorRef) {
+              private cdRef: ChangeDetectorRef,
+              private inventoryApiService: InventoryApiService,) {
   }
 
   ngOnInit(): void {
     this.characterManager.character$.subscribe(character => {
       this.inventory = character?.inventory;
+
+      this.setItemImageLoaderStatuses();
     });
+  }
+
+  //method that will set starting image load statuses of inventory items
+  setItemImageLoaderStatuses() {
+    this.inventory?.inventorySlots.forEach(inventorySlot => {
+      if (inventorySlot.itemInstance == null) {
+        this.itemsImagesLoadingStatusList.push(false)
+      }else {
+        this.itemsImagesLoadingStatusList.push(true)
+      }
+    })
   }
 
   onDragStart(item: ItemInstanceModel, itemIndex: number, event: DragEvent, inventorySlotId: number): void {
@@ -190,7 +210,25 @@ export class CharacterInventoryComponent implements OnInit {
 
   }
 
+  onInventoryItemImgLoad(inventoryImageIndex: number) {
+    console.log('item image loaded: ', inventoryImageIndex);
 
-  protected readonly getFormattedWeaponType = getFormattedWeaponType;
-  protected readonly getFormattedItemType = getFormattedItemType;
+    this.itemsImagesLoadingStatusList[inventoryImageIndex] = false;
+
+  }
+
+  onRightClick(event: MouseEvent, slot: InventorySlotModel) {
+    event.preventDefault(); // Prevents the default browser context menu
+    console.log("Right-clicked on slot:", slot);
+    // Add your custom logic here (e.g., showing an item context menu)
+
+    this.inventoryApiService.deleteItemFromInventory(slot.id ,slot.itemInstance!.id).subscribe({
+      next: () => {},
+      error: err => {},
+      complete: () => {}
+    })
+
+  }
+
+
 }

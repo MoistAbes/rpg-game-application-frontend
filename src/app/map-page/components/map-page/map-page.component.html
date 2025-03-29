@@ -1,1 +1,121 @@
-<p>map-page works!</p>
+<div class="main-container">
+  <div class="map-filter-container">
+    <div class="row">
+      <div class="col-2">
+        <ng-select
+          class="zone-filter"
+          [(ngModel)]="selectedFilterZone"
+          [items]="zones"
+          bindLabel="name"
+          (change)="selectZone(selectedFilterZone)"
+          placeholder="Strefa">
+        </ng-select>
+      </div>
+<!--      <button (click)="modal.show()">Otwórz Modal</button>-->
+
+
+    </div>
+
+  </div>
+
+  <div class="map-wrapper">
+    <div class="map-container"
+         (mousedown)="startDrag($event)"
+         (mousemove)="onDrag($event)"
+         (mouseup)="endDrag()"
+         (mouseleave)="endDrag()"
+         [style.transform]="mapTransform">
+      <img #mapImg priority ngSrc="/map/world-map.svg" alt="World Map" height="2000" width="4000"/>
+
+
+      <div *ngFor="let zone of zones; let i = index"
+           class="zone"
+           [style.top.px]="zone.positionY"
+           [style.left.px]="zone.positionX"
+           (click)="selectZone(zone); modal.show()">
+        {{ zone.name }}
+
+        <!--item image loader-->
+        <div class="container-loader" *ngIf="!isZoneImgLoadedList[i]">
+          <div class="spinner"></div>
+        </div>
+
+        <img
+          class="zone-img"
+          ngSrc="/map/{{zone.iconPath}}"
+          alt="Forest zone"
+          height="100"
+          width="100"
+          (load)="onZoneImgLoad(i)"> <!-- Pass the correct index -->
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <app-center-modal [isOpen]="showModal" (closed)="onModalClose()" #modal>
+    <h1 style="color: #1e1e2e">{{selectedZone?.name}}</h1>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Location</th>
+        <th scope="col">Level</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let location of selectedZone?.locations">
+        <tr (click)="onLocationClicked(location)" class="location-row">
+          <td>{{ location.name }}</td>
+          <td>{{ location.minEnemyLevel }} - {{location.maxEnemyLevel}}</td>
+        </tr>
+        <tr *ngIf="selectedLocation === location" class="info-row">
+          <td colspan="1">
+            <div class="info-panel">
+              <p>More details about {{ selectedLocation.name }}...</p>
+              <button (click)="onEnterLocationClicked()" class="btn btn-secondary">ENTER</button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </app-center-modal>
+
+
+  <!--  <app-center-modal [isOpen]="showModal" #modal>-->
+<!--    <h1 style="color: #1e1e2e">{{selectedZone?.name}}</h1>-->
+<!--    <table class="table">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th scope="col">Location</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <ng-container *ngFor="let location of selectedZone?.locations">-->
+<!--        &lt;!&ndash; Main row &ndash;&gt;-->
+<!--        <tr (click)="onLocationClicked(location)" class="location-row">-->
+<!--          <td>{{ location.name }}</td>-->
+<!--        </tr>-->
+
+<!--        &lt;!&ndash; Additional info row &ndash;&gt;-->
+<!--        <tr *ngIf="selectedLocation === location" class="info-row">-->
+<!--          <td colspan="1">-->
+<!--            <div class="info-panel">-->
+<!--              <p>More details about {{ selectedLocation.name }}...</p>-->
+<!--            </div>-->
+<!--          </td>-->
+<!--        </tr>-->
+<!--      </ng-container>-->
+<!--      </tbody>-->
+<!--    </table>-->
+
+
+<!--  </app-center-modal>-->
+
+</div>
+
+
+
+
+
