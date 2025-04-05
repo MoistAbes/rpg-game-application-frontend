@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {API_ENDPOINTS} from '../../endpoints/api-endpoints';
 import {Observable} from 'rxjs';
-import {CharacterInventoryModel} from '../../models/character-inventory-model';
+import {CharacterInventoryModel} from '../../models/character/character-inventory-model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +21,13 @@ export class InventoryApiService {
 
 
   moveItem(prevPosition: number, newPosition: number, inventoryId: number) {
-
     const headers = new HttpHeaders().set('X-Skip-Loading', 'true');
     return this.http.put<void>(`${this.apiUrl}${API_ENDPOINTS.INVENTORY_SERVICE.MOVE_ITEM}` + prevPosition + "/" + newPosition + "/" + inventoryId, {}, {headers});
   }
 
+
   deleteItemFromInventory(inventorySlotId: number ,itemInstanceId: number): Observable<any> {
-    return this.http.delete<any>(this.apiUrl + API_ENDPOINTS.INVENTORY_SERVICE.DELETE_ITEM + inventorySlotId + "/" + itemInstanceId);
+    const headers = new HttpHeaders().set('X-Skip-Loading', 'true');
+    return this.http.delete<any>(this.apiUrl + API_ENDPOINTS.INVENTORY_SERVICE.DELETE_ITEM + inventorySlotId + "/" + itemInstanceId, {headers});
   }
 }

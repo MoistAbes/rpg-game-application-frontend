@@ -2,10 +2,27 @@
   position: relative;
 }
 
+img.gold-icon {
+  filter: invert(75%) sepia(50%) saturate(300%) hue-rotate(10deg);
+}
+
+.inline-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  gap: 4px; /* Adjust spacing between icon and text */
+}
+.inline-container img,
+.inline-container p {
+  margin: 0;
+  padding: 0;
+  line-height: 1; /* Prevent extra space from text */
+}
+
+
 .dropdown-menu-custom {
   position: absolute;
-  background: #8e8e8e;
-  border: 1px solid #ccc;
+  background: #afafaf;
+  border: 1px solid #4efaff;
   list-style: none;
   margin-right: 5px;
   /*padding: 5px 0;*/
@@ -15,9 +32,9 @@
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   /*border-radius: 5px;*/
-  width: 150px;
+  max-width: 50px;
   z-index: 1000;
-  left: -5px;
+  left: -80px;
 }
 
 .dropdown-item-custom:hover .dropdown-menu-custom {

@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {API_ENDPOINTS} from '../../endpoints/api-endpoints';
 import {Observable} from 'rxjs';
 import {EnemyInstanceModel} from '../../models/enemy/enemy-instance-model';
-import {EnemyType} from '../../enums/enemy-type';
+import {EnemyTypeEnum} from '../../enums/enemy-type-enum';
 import {GenerateEnemyRequest} from '../../dto/request/generate-enemy-request';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class EnemyApiService {
     return this.http.post<EnemyInstanceModel>(this.apiUrl + API_ENDPOINTS.ENEMY_SERVICE.GENERATE_ENEMY, generateEnemyRequest)
   }
 
-  public getEnemyTemplateIdsByTypeAndTier(enemyTypes: EnemyType[], tiers: number[]): Observable<number[]>  {
+  public getEnemyTemplateIdsByTypeAndTier(enemyTypes: EnemyTypeEnum[], tiers: number[]): Observable<number[]>  {
     let params = new HttpParams();
     params = this.createHttpParams(params, 'enemyTypes', enemyTypes);
     params = this.createHttpParams(params, 'tiers', tiers);

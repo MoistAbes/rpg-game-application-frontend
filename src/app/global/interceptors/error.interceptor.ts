@@ -23,6 +23,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     finalize(() => loadingService.hide()), // Always hide loading after request
     catchError((error: HttpErrorResponse) => {
+
+      const errorMessage = error.error?.message || 'An unknown error occurred';
+
       switch (error.status) {
         case 400:
           toastr.error('Bad Request. Please check your input.');
@@ -31,7 +34,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           jwtService.removeToken()
           characterLocalService.removeCharacterData();
           router.navigate(['/login']);  // Redirect to login page
-          toastr.warning('Unauthorized. Please log in again.');
+          toastr.warning(errorMessage);
+          console.log("Error: ", error)
 
           break;
         case 403:
@@ -40,11 +44,15 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         case 404:
           toastr.error('Not Found. The requested resource could not be found.');
           break;
+        case 500:
+          toastr.error(error.error.message);
+          break;
         case 503:
           toastr.error(error.error.message);
           break;
         default:
           toastr.error('An unknown error occurred.');
+          console.log("Error: ", error)
       }
       throw error; // Rethrow the error
     })

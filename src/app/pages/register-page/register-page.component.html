@@ -1,0 +1,30 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-title class="text-center login-text">Register</mat-card-title>
+    <mat-card-content>
+      <form>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input [(ngModel)]="username" name="username" matInput type="text" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input [(ngModel)]="password" name="password" matInput type="password" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirm password</mat-label>
+          <input [(ngModel)]="passwordConfirm" name="confirmPassword" matInput type="password" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>E-mail</mat-label>
+          <input [(ngModel)]="email" name="email" matInput type="email" required />
+        </mat-form-field>
+
+        <button (click)="onRegisterButtonClick()" mat-raised-button color="primary" class="full-width">Register</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

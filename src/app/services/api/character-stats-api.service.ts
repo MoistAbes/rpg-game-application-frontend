@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {API_ENDPOINTS} from '../../endpoints/api-endpoints';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {CharacterStats} from '../../models/character-stats-model';
+import {CharacterStats} from '../../models/character/character-stats-model';
 
 @Injectable({
   providedIn: 'root'

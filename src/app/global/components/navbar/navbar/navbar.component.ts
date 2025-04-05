@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {JwtService} from '../../../services/jwt.service';
-import {NgIf} from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
 import {CharacterApiService} from '../../../../services/api/character-api.service';
 import {CharacterLocalService} from '../../../services/character-local.service';
+import {CharacterManagerService} from '../../../services/character-manager.service';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     RouterLink,
-    NgIf
+    NgIf,
+    NgOptimizedImage
   ],
   templateUrl: './navbar.component.html',
   standalone: true,
@@ -20,7 +22,8 @@ export class NavbarComponent {
 
   constructor(private router: Router,
               protected jwtService: JwtService,
-              protected characterLocalService: CharacterLocalService,) {
+              protected characterLocalService: CharacterLocalService,
+              protected characterManagerService: CharacterManagerService,) {
   }
 
   toggleMenu(event: MouseEvent) {

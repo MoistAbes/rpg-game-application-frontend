@@ -1,0 +1,316 @@
+<div class="main-container">
+  <div *ngIf="character && character.equipment" class="stats-container">
+    <mat-card class="character-stats-card">
+      <mat-card-header>
+        <mat-card-title class="character-name-text">{{ character.name }}</mat-card-title>
+        <mat-card-subtitle>Level {{ character.level }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-divider></mat-divider>
+
+      <!--  test-->
+
+      <div style="background: rgba(76,175,80,0); width: 70%" class="container" *ngIf="character && character.equipment">
+        <div class="row" style="margin-bottom: 10px">
+          <div class="col-4">
+          </div>
+          <div class="col-4">
+            <div class="item-slot"
+                 [draggable]="character.equipment.helmet != undefined"
+                 (dragstart)="onDragStart($event, 0, character.equipment.helmet!)"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDrop($event, ItemType.HELMET_ITEM_INSTANCE, character.equipment.helmet)"
+
+                 (mousedown)="onMouseDownHover()"
+                 (mouseup)="onMouseUpHover($event, character.equipment.helmet)"
+                 (mousemove)="onHoverMouseMove($event,character.equipment.helmet)"
+                 (mouseenter)="onHoverMouseEnter($event,character.equipment.helmet)"
+                 (mouseleave)="onHoverEnd()">
+
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[0]">
+                <div class="spinner"></div>
+              </div>
+
+
+              <img *ngIf="character.equipment.helmet"
+                   [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.helmet)"
+                   alt="{{ itemTypeService.getItemName(character.equipment.helmet) }} icon"
+                   width="64"
+                   height="64"
+                   class="item-icon"
+                   priority
+                   (load)="onEquipmentItemImgLoad(0)">
+            </div>
+          </div>
+          <div class="col-4">
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 10px">
+          <div class="col-sm">
+            <div class="item-slot"
+                 [draggable]="character.equipment.gloves != undefined"
+                 (dragstart)="onDragStart($event, 2, character.equipment.gloves!)"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDrop($event, ItemType.GLOVES_ITEM_INSTANCE, character.equipment.gloves)"
+
+                 (mousedown)="onMouseDownHover()"
+                 (mouseup)="onMouseUpHover($event, character.equipment.gloves)"
+                 (mousemove)="onHoverMouseMove($event,character.equipment.gloves)"
+                 (mouseenter)="onHoverMouseEnter($event,character.equipment.gloves)"
+                 (mouseleave)="onHoverEnd()">
+
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[2]">
+                <div class="spinner"></div>
+              </div>
+
+              <img *ngIf="character.equipment.gloves"
+                   [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.gloves)"
+                   alt="{{ itemTypeService.getItemName(character.equipment.gloves) }} icon"
+                   width="64"
+                   height="64"
+                   class="item-icon"
+                   priority
+                   (load)="onEquipmentItemImgLoad(2)">
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="item-slot"
+                 [draggable]="character.equipment.chest != undefined"
+                 (dragstart)="onDragStart($event, 1, character.equipment.chest!)"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDrop($event, ItemType.CHEST_ITEM_INSTANCE, character.equipment.chest)"
+
+                 (mousedown)="onMouseDownHover()"
+                 (mouseup)="onMouseUpHover($event, character.equipment.chest)"
+                 (mousemove)="onHoverMouseMove($event,character.equipment.chest)"
+                 (mouseenter)="onHoverMouseEnter($event,character.equipment.chest)"
+                 (mouseleave)="onHoverEnd()">
+
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[1]">
+                <div class="spinner"></div>
+              </div>
+
+              <img *ngIf="character.equipment.chest"
+                   [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.chest)"
+                   alt="{{ itemTypeService.getItemName(character.equipment.chest) }} icon"
+                   width="64"
+                   height="64"
+                   class="item-icon"
+                   priority
+                   (load)="onEquipmentItemImgLoad(1)">
+            </div>
+          </div>
+          <div class="col-sm">
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 10px">
+          <div class="col-sm">
+          </div>
+          <div class="col-sm">
+            <div class="item-slot"
+                 [draggable]="character.equipment.boots != undefined"
+                 (dragstart)="onDragStart($event, 3, character.equipment.boots!)"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDrop($event, ItemType.BOOTS_ITEM_INSTANCE, character.equipment.boots)"
+
+                 (mousedown)="onMouseDownHover()"
+                 (mouseup)="onMouseUpHover($event, character.equipment.boots)"
+                 (mousemove)="onHoverMouseMove($event,character.equipment.boots)"
+                 (mouseenter)="onHoverMouseEnter($event,character.equipment.boots)"
+                 (mouseleave)="onHoverEnd()">
+
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[3]">
+                <div class="spinner"></div>
+              </div>
+
+              <img *ngIf="character.equipment.boots"
+                   [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.boots)"
+                   alt="{{ itemTypeService.getItemName(character.equipment.boots) }} icon"
+                   width="64"
+                   height="64"
+                   class="item-icon"
+                   priority
+                   (load)="onEquipmentItemImgLoad(3)">
+            </div>
+          </div>
+          <div class="col-sm">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm">
+            <div class="item-slot"
+                 [draggable]="character.equipment.mainHand != undefined"
+                 (dragstart)="onDragStart($event, 4, character.equipment.mainHand!)"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDrop($event, ItemType.WEAPON_ITEM_INSTANCE, character.equipment.mainHand)"
+
+                 (mousedown)="onMouseDownHover()"
+                 (mouseup)="onMouseUpHover($event, character.equipment.mainHand)"
+                 (mousemove)="onHoverMouseMove($event,character.equipment.mainHand)"
+                 (mouseenter)="onHoverMouseEnter($event,character.equipment.mainHand)"
+                 (mouseleave)="onHoverEnd()">
+
+              <!--item image loader-->
+              <div class="container-loader" *ngIf="!isItemImgLoadedList[4]">
+                <div class="spinner"></div>
+              </div>
+
+              <img *ngIf="character.equipment.mainHand"
+                   [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(character.equipment.mainHand)"
+                   alt="{{ itemTypeService.getItemName(character.equipment.mainHand) }} icon"
+                   width="64"
+                   height="64"
+                   class="item-icon"
+                   priority
+                   (load)="onEquipmentItemImgLoad(4)">
+            </div>
+          </div>
+          <div class="col-sm">
+
+          </div>
+          <div class="col-sm">
+          </div>
+        </div>
+      </div>
+
+      <!--  test-->
+
+      <mat-divider></mat-divider>
+
+      <mat-card-content>
+
+        <div class="health-bar-container">
+          <div class="health-bar" [ngStyle]="{ 'width': getHealthPercentage() + '%' }">
+            <p class="health-text">
+              {{ character.characterStats?.currentHealth }} / {{ character.characterStats?.maxHealth }}
+            </p>
+          </div>
+        </div>
+
+        <div style="margin-top: 3px" class="experience-bar-container">
+          <div class="experience-bar" [ngStyle]="{ 'width': getExperiencePercentage() + '%' }">
+            <p class="experience-text">
+              {{ character.experience }} / {{ character.nextLevelExperience }}
+            </p>
+          </div>
+        </div>
+
+
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <strong style="color: #1e1e2e">Attack</strong>
+            <p>{{ character.characterStats?.attack }}</p>
+          </div>
+          <div class="stat-item">
+            <strong style="color: #1e1e2e">Defense</strong>
+            <p>{{ character.characterStats?.defense }}</p>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-item">
+            <strong style="color: #1e1e2e">Critical chance</strong>
+            <p>{{ character.characterStats?.criticalChance }} %</p>
+          </div>
+          <div class="stat-item">
+            <strong style="color: #1e1e2e">Critical damage</strong>
+            <p>{{ character.characterStats?.criticalDamage }} %</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+
+<!--  HOVERS-->
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoverItem))"
+       *ngIf="hoverItem != undefined && hoverItem.type == ItemType.HELMET_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoverItem) }}</p>
+<!--    <p class="item-description">{{ itemTypeService.getItemDescription(hoverItem) }}</p>-->
+    <p class="item-description">{{ getFormattedItemRarity(hoverItem.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoverItem))}}</p>
+    <hr>
+    <p class="item-description">Requirement: {{equipmentItemTypeService.getRequirementLevel(hoverItem)}} level</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoverItem) }}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoverItem.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+  </div>
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoverItem))"
+       *ngIf="hoverItem != undefined && hoverItem.type == ItemType.CHEST_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoverItem) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoverItem.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoverItem))}}</p>
+    <hr>
+    <p class="item-description">Requirement: {{equipmentItemTypeService.getRequirementLevel(hoverItem)}} level</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoverItem) }}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoverItem.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+  </div>
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoverItem))"
+       *ngIf="hoverItem != undefined && hoverItem.type == ItemType.GLOVES_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoverItem) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoverItem.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoverItem))}}</p>
+    <hr>
+    <p class="item-description">Requirement: {{equipmentItemTypeService.getRequirementLevel(hoverItem)}} level</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoverItem) }}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoverItem.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+  </div>
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoverItem))"
+       *ngIf="hoverItem != undefined && hoverItem.type == ItemType.BOOTS_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoverItem) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoverItem.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoverItem))}}</p>
+    <hr>
+    <p class="item-description">Requirement: {{equipmentItemTypeService.getRequirementLevel(hoverItem)}} level</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoverItem) }}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoverItem.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+  </div>
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoverItem))"
+       *ngIf="hoverItem != undefined && isWeapon(hoverItem.type!)"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoverItem) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoverItem.itemRarity!)}} {{getFormattedWeaponType(itemTypeService.getWeaponType(hoverItem))}} {{getFormattedItemType(hoverItem.type!)}}</p>
+    <hr>
+    <p class="item-description">Requirement: {{equipmentItemTypeService.getRequirementLevel(hoverItem)}} level</p>
+    <hr>
+    <p class="item-stat">Damage: {{ itemTypeService.getDamageValueProperty(hoverItem) }}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoverItem.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+  </div>
+
+  <!-- Custom drag preview -->
+  <div id="drag-preview-id"
+       class="drag-preview"
+       *ngIf="draggedItem"
+       [style.top.px]="dragPreviewY"
+       [style.left.px]="dragPreviewX">
+    <img
+      [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(draggedItem)"
+      alt="{{ itemTypeService.getItemName(draggedItem) }} icon"
+      width="64"
+      height="64"
+      class="item-icon"
+      priority>
+  </div>
+
+</div>
+
+

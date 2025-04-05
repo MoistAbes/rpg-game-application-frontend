@@ -1,5 +1,5 @@
 import {EnemyTemplateModel} from './enemy-template-model';
-import {EnemyRank} from '../../enums/enemy-rank';
+import {EnemyRankEnum} from '../../enums/enemy-rank-enum';
 
 export class EnemyInstanceModel {
   id:number = 0;
@@ -8,6 +8,6 @@ export class EnemyInstanceModel {
   currentArmor: number = 0;
   currentAttack: number = 0;
   level: number = 0;
-  rank: EnemyRank | undefined;
+  rank: EnemyRankEnum | undefined;
   template: EnemyTemplateModel | undefined;
 }

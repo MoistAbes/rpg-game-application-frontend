@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {API_ENDPOINTS} from '../../endpoints/api-endpoints';
 import {Observable} from 'rxjs';
-import {CombatRequestModel} from '../../models/combat-request-model';
-import {CombatLogModel} from '../../models/combat-log-model';
-import {CombatResultModel} from '../../models/combat-result-model';
+import {CombatRequestModel} from '../../dto/request/combat-request-model';
+import {CombatResultModel} from '../../models/combat/combat-result-model';
+
 
 @Injectable({
   providedIn: 'root'

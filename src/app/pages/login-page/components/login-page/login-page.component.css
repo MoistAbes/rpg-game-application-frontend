@@ -1,0 +1,32 @@
+/* Centering the form */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-text{
+  color: black;
+}
+
+/* Card Styling */
+.login-card {
+  width: 350px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgb(14, 228, 64);
+  border: #45a049 3px solid;
+  background: #f1f1f1;
+}
+
+/* Full-width form fields */
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Centering text */
+.text-center {
+  text-align: center;
+}

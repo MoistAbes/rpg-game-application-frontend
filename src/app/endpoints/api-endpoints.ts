@@ -4,9 +4,13 @@ export const API_ENDPOINTS = {
   AUTH_SERVICE: {
     LOGIN: "auth/login"  // change this from a function to a string
   },
+  USER_SERVICE: {
+    REGISTER: "users/register",
+  },
   CHARACTER_SERVICE: {
     GET_ALL_BY_USER: "characters/get-all-by-user/",
     GET_CHARACTER: "characters/get-character/",
+    CREATE_CHARACTER: "characters/create/",
     GET_CHARACTER_STATS: "characters/stats/get-by-character-id/",
     UPDATE_CHARACTER_CURRENT_HEALTH: "characters/stats/current-health/",
   },
@@ -19,6 +23,7 @@ export const API_ENDPOINTS = {
     EQUIP_ITEM_TO_EMPTY_SLOT: "inventory-service/equipments/equip-item-to-empty-slot/",
     EQUIP_ITEM_TO_TAKEN_SLOT: "inventory-service/equipments/equip-item-to-taken-slot/",
     DELETE_ITEM: "inventory-service/inventories/delete-item/",
+    GET_ALL_ITEM_INSTANCE_BY_IDS: "inventory-service/item-instance/get-all-instance-by-ids",
   },
   ZONE_SERVICE: {
     GET_ZONES: "zone-service/zones/get-all"

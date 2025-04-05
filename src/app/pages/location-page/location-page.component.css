@@ -1,0 +1,231 @@
+
+.top-panel {
+  top: 40px;
+  width: 83.33333%;
+  position: absolute;
+  background-color: #3c2323; /* Light red for visibility */
+  height: 3vh;
+}
+
+.middle-panel {
+  background-color: #5f4788; /* Light purple for visibility */
+  height: 80vh; /* Main content area */
+}
+
+.bottom-panel {
+  background-color: #336560; /* Light green for visibility */
+  height: 16vh;
+}
+
+.generate-enemy-button {
+  /*max-width: 150px;*/
+}
+
+.card {
+  max-width: 15vw;
+  padding: 10px;
+  margin: 10px;
+  max-height: 50vh;
+
+}
+
+.enemy-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers content horizontally */
+  justify-content: center; /* This centers content vertically */
+  width: 100%;
+  margin: 10vw 20vw 10vh 10vw;
+
+/*  margin: 10vw 200px 10px 10px;
+Here’s how the values correspond:
+
+    10vw: Top margin — 10% of the viewport's width (same as the original).
+
+    20vw: Right margin — Here, instead of 200px, I used 20vw (which is 20% of the viewport's width). If you want the exact same margin size as 200px, you would need to calculate the equivalent vw based on your viewport width. For example, if your viewport width is 1000px, 200px would be 200 / 1000 * 100 = 20vw.
+
+    2vh: Bottom margin — I used 2vh, which means 2% of the viewport's height. You can adjust this based on how much margin you want in relation to the viewport height.
+
+    2vw: Left margin — This means 2% of the viewport's width.
+*/
+}
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers content horizontally */
+  justify-content: center; /* This centers content vertically */
+  width: 100%;
+  margin: 10vw 0 20vh 20vw;
+}
+
+.character-img {
+  /*border: solid 2px #3c2323;*/
+}
+
+.card-img-top {
+  width: 100%; /* Ensure image takes up full width of the card */
+  object-fit: cover; /* Ensures the image fills the box, while maintaining aspect ratio */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/*health bar*/
+.health-bar-container {
+  height: 20px;
+  background-color: #444;
+  overflow: hidden;
+  border: 2px solid #222;
+}
+
+.health-bar {
+  height: 100%;
+  background-color: #8f0004; /* Green for healthy */
+  transition: width 0.3s ease-in-out;
+
+}
+
+.health-text {
+  color: white; /* Makes text readable */
+  font-size: 12px !important;
+  font-weight: bold;
+  margin: 0;
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Center dynamically */
+
+  white-space: nowrap; /* Prevents text from breaking */
+  max-height: 100%;
+}
+
+.combat-log-textarea{
+  font-size: 12px !important;
+}
+
+/*experience bar*/
+.experience-bar-container {
+  height: 20px;
+  background-color: #444;
+  overflow: hidden;
+  border: 2px solid #222;
+}
+
+.experience-bar {
+  height: 100%;
+  background-color: #e8c200; /* Green for healthy */
+  transition: width 0.3s ease-in-out;
+
+}
+
+.experience-text {
+  color: white; /* Makes text readable */
+  font-size: 12px !important;
+  font-weight: bold;
+  margin: 0;
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Center dynamically */
+
+  white-space: nowrap; /* Prevents text from breaking */
+  max-height: 100%;
+}
+
+
+/* ATTACK ANIMATION */
+@keyframes moveInArc {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  20% {
+    transform: translateX(120px) translateY(-80px) rotate(36deg);
+  }
+  40% {
+    transform: translateX(240px) translateY(-140px) rotate(72deg);
+  }
+  60% {
+    transform: translateX(360px) translateY(-140px) rotate(108deg);
+  }
+  80% {
+    transform: translateX(480px) translateY(-80px) rotate(144deg);
+  }
+  100% {
+    transform: translateX(600px) translateY(0) rotate(180deg);
+  }
+}
+
+.moving-svg {
+  z-index: 100;
+  position: absolute;
+  animation: moveInArc 0.8s cubic-bezier(1, 1, 1, 1) forwards;
+}
+
+
+@keyframes moveInArcLeft {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg); /* Start position */
+  }
+  25% {
+    transform: translateX(-150px) translateY(-50px) rotate(-45deg); /* Start position */
+  }
+  50% {
+    transform: translateX(-300px) translateY(-100px) rotate(-90deg); /* Move up and right */
+  }
+  75% {
+    transform: translateX(-450px) translateY(-50px) rotate(-135deg); /* Move up and right */
+  }
+  100% {
+    transform: translateX(-600px) translateY(0) rotate(-180deg); /* Move down and right */
+  }
+}
+
+.moving-svg-enemy {
+  z-index: 100;
+  position: absolute;
+  animation: moveInArcLeft 0.8s cubic-bezier(0.1, 0.4, 0.7, 0.5) forwards;
+}
+
+/* Normal rank style */
+.normal {
+  color: #808080; /* Gray color */
+  font-weight: normal;
+}
+
+/* Elite rank style */
+.elite {
+  color: #1E90FF; /* Blue color */
+  font-weight: bold;
+}
+
+/* Champion rank style */
+.champion {
+  color: #FFD700; /* Gold color */
+  font-weight: bold;
+  text-shadow: 2px 2px 5px rgba(255, 215, 0, 0.7);
+}
+
+/* Boss rank style */
+.boss {
+  color: #FF6347; /* Red color */
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 8px rgba(255, 99, 71, 0.7);
+}
+
+/* Mythic rank style */
+.mythic {
+  color: #800080; /* Purple color */
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.2em;
+  text-shadow: 3px 3px 10px rgba(128, 0, 128, 0.7);
+  animation: glowing 1.5s infinite alternate;
+}
+
+@keyframes glowing {
+  0% { text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; }
+  100% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+}
+
+
