@@ -1,9 +1,9 @@
-import {ItemStatType} from '../../enums/ItemStatType';
+import {ItemStatTypeEnum} from '../../enums/item-stat-type-enum';
 
 export class ItemStatsModel {
 
    id: number = 0;
    value: number = 0;
-   itemStatType: ItemStatType | undefined;
+   itemStatType: ItemStatTypeEnum | undefined;
 
 }

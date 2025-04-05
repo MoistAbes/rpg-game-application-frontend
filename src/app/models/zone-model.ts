@@ -1,5 +1,5 @@
 import {LocationModel} from './location-model';
-import {EnemyType} from '../enums/enemy-type';
+import {EnemyTypeEnum} from '../enums/enemy-type-enum';
 
 export class ZoneModel {
 
@@ -14,6 +14,6 @@ export class ZoneModel {
 
   locations: LocationModel[] = [];
 
-  allowedEnemyTypes: EnemyType[] = [];
+  allowedEnemyTypes: EnemyTypeEnum[] = [];
 
 }

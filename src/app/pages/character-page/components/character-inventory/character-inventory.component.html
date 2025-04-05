@@ -1,0 +1,149 @@
+<div *ngIf="inventory"
+     class="inventory-grid">
+
+  <div class="item-slot"
+       *ngFor="let slot of inventory.inventorySlots; let i = index"
+       [attr.data-index]="i"
+
+       [draggable]="!!slot.itemInstance"
+       (dragstart)="onDragStart(slot.itemInstance!, i, $event, slot.id)"
+       (drop)="onDragDrop(i)"
+       (dragover)="onDragOver($event)"
+
+       (mousedown)="onMouseDownHover()"
+       (mouseup)="onMouseUpHover($event, slot)"
+       (mousemove)="onHoverMouseMove($event,slot)"
+       (mouseenter)="onHoverMouseEnter($event,slot)"
+       (mouseleave)="onHoverEnd()"
+
+       (contextmenu)="onRightClick($event, slot)">
+
+
+    <!--item image loader-->
+    <div class="container-loader" *ngIf="itemsImagesLoadingStatusList[i]">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Render helmet item -->
+    <img *ngIf="slot.itemInstance"
+         [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(slot.itemInstance)"
+         [alt]="itemTypeService.getItemName(slot.itemInstance)"
+         width="64"
+         height="64"
+         class="item-icon"
+         priority
+         (load)="onInventoryItemImgLoad(i)">
+  </div>
+
+  <!-- Custom drag preview -->
+  <div class="drag-preview"
+       id="drag-preview-inventory-id"
+      *ngIf="draggedItemInstance"
+      [style.top.px]="dragPreviewY"
+      [style.left.px]="dragPreviewX">
+    <img
+      [ngSrc]="'/icons/items/' + itemTypeService.getItemIconPath(draggedItemInstance)"
+      [alt]="itemTypeService.getItemName(draggedItemInstance)"
+      width="64"
+      height="64"
+      class="item-icon"
+      priority>
+  </div>
+
+<!--  HOVERS-->
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
+        *ngIf="hoveredSlot != null &&
+        hoveredSlot.itemInstance != null &&
+        hoveredSlot.itemInstance.type == itemType.HELMET_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoveredSlot.itemInstance.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoveredSlot.itemInstance))}}</p>
+    <hr>
+    <p class="item-description">Requirement: <span *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) <= characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> <span style="color: red" *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) > characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> level</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoveredSlot.itemInstance) }}</p>
+    <hr>
+
+    <p *ngFor="let itemStat of hoveredSlot.itemInstance.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+
+  </div>
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
+       *ngIf="hoveredSlot != null &&
+        hoveredSlot.itemInstance != null &&
+        hoveredSlot.itemInstance.type == itemType.CHEST_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoveredSlot.itemInstance.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoveredSlot.itemInstance))}}</p>
+    <hr>
+    <p class="item-description">Requirement: <span *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) <= characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> <span style="color: red" *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) > characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> level</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoveredSlot.itemInstance) }}</p>
+    <hr>
+
+    <p *ngFor="let itemStat of hoveredSlot.itemInstance.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+
+  </div>
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
+       *ngIf="hoveredSlot != null && hoveredSlot.itemInstance != null && hoveredSlot.itemInstance.type == itemType.BOOTS_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoveredSlot.itemInstance.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoveredSlot.itemInstance))}}</p>
+    <hr>
+    <p class="item-description">Requirement: <span *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) <= characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> <span style="color: red" *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) > characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> level</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoveredSlot.itemInstance) }}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoveredSlot.itemInstance.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+
+  </div>
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
+       *ngIf="hoveredSlot != null &&
+        hoveredSlot.itemInstance != null &&
+        hoveredSlot.itemInstance.type == itemType.GLOVES_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoveredSlot.itemInstance.itemRarity!)}} {{getFormattedArmorType(itemTypeService.getItemArmorType(hoveredSlot.itemInstance))}}</p>
+    <hr>
+    <p class="item-description">Requirement: <span *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) <= characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> <span style="color: red" *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) > characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> level</p>
+    <hr>
+    <p class="item-stat">Armor: {{ itemTypeService.getArmorValueProperty(hoveredSlot.itemInstance)}}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoveredSlot.itemInstance.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+  </div>
+
+<!--  WEAPON HOVER TEST-->
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
+       *ngIf="hoveredSlot != null &&
+        hoveredSlot.itemInstance != null &&
+        isWeapon(hoveredSlot.itemInstance.type!)"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
+    <p class="item-description">{{ getFormattedItemRarity(hoveredSlot.itemInstance.itemRarity!)}} {{getFormattedWeaponType(itemTypeService.getWeaponType(hoveredSlot.itemInstance))}} {{getFormattedItemType(hoveredSlot.itemInstance.type!)}}</p>
+    <hr>
+    <p class="item-description">Requirement: <span *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) <= characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> <span style="color: red" *ngIf="equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance) > characterManagerService.getCharacterLevel()">{{equipmentItemTypeService.getRequirementLevel(hoveredSlot.itemInstance)}}</span> level</p>
+    <hr>
+    <p class="item-stat">Damage: {{ itemTypeService.getDamageValueProperty(hoveredSlot.itemInstance)}}</p>
+    <hr>
+    <p *ngFor="let itemStat of hoveredSlot.itemInstance.itemStats" class="item-stat">{{formatItemStatType(itemStat.itemStatType, itemStat.value)}}</p>
+  </div>
+
+  <div [ngClass]="getHoverClassBasedOnItemRarity(itemTypeService.getItemRarity(hoveredSlot.itemInstance))"
+       *ngIf="hoveredSlot != null &&
+        hoveredSlot.itemInstance != null &&
+        hoveredSlot.itemInstance.type == itemType.COMMON_ITEM_INSTANCE"
+       [style.top.px]="hoverPreviewY" [style.left.px]="hoverPreviewX">
+    <p>{{ itemTypeService.getItemName(hoveredSlot.itemInstance) }}</p>
+    <hr>
+    <p class="item-description">{{ itemTypeService.getItemDescription(hoveredSlot.itemInstance) }}</p>
+  </div>
+
+
+
+
+</div>
+
+

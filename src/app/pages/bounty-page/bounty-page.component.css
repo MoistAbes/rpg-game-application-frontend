@@ -1,0 +1,23 @@
+.bounty-board-img {
+  position: absolute;
+  z-index: 0;
+}
+
+.bounty-quest-img {
+  transition: box-shadow 0.3s ease;
+  border-radius: 4px; /* optional: smooth corners */
+  position: absolute;
+  z-index: 1;
+}
+
+.bounty-quest-img:hover {
+  box-shadow: 0 0 15px 5px rgba(0, 255, 255, 0.7); /* cyan glow */
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,37 @@
+<div class="character-selection-container">
+  <h2>Select Your Character</h2>
+
+  <div class="character-grid">
+    <!-- Character Cards -->
+    <div class="character-card" *ngFor="let character of characterList">
+      <div class="character-info">
+        <h3>{{ character.name }}</h3>
+        <p>Level: {{ character.level }}</p>
+      </div>
+      <button class="play-button" (click)="playCharacter(character.id, character.name)">Play</button>
+    </div>
+
+    <!-- Create New Character Card (Always Visible) -->
+    <div class="character-card create-character-card" (click)="onNewCharacterCardClicked()">
+      <div class="create-character-content">
+        <h3>+</h3>
+        <p>Create New Character</p>
+      </div>
+    </div>
+  </div>
+
+
+  <app-center-modal [isOpen]="showModal" (closed)="onModalClose()" #modal>
+    <div>
+      <h1>Character creation</h1>
+    </div>
+    <div>
+      <input [(ngModel)]="newCharacterName" type="text" class="form-control">
+    </div>
+    <div style="margin-top: 10px">
+      <button (click)="createCharacter()" class="btn btn-success">CREATE</button>
+    </div>
+
+  </app-center-modal>
+
+</div>

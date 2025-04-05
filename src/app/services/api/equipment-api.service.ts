@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {API_ENDPOINTS} from '../../endpoints/api-endpoints';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {CharacterEquipmentModel} from '../../models/character-equipment-model';
-import {ItemType} from '../../enums/ItemType';
+import {CharacterEquipmentModel} from '../../models/character/character-equipment-model';
+
 
 @Injectable({
   providedIn: 'root'

@@ -1,8 +1,8 @@
-import {EnemyType} from '../../enums/enemy-type';
+import {EnemyTypeEnum} from '../../enums/enemy-type-enum';
 
 export class EnemyTypeModel {
 
-  type: EnemyType | undefined;
+  type: EnemyTypeEnum | undefined;
   description: string = '';
 
 }

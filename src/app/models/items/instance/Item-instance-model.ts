@@ -1,14 +1,13 @@
-import {ItemRarity} from '../../../enums/ItemRarity';
+import {ItemRarityEnum} from '../../../enums/item-rarity-enum';
 import {ItemStatsModel} from '../item-stats-model';
-import {ItemType} from '../../../enums/ItemType';
+import {ItemTypeEnum} from '../../../enums/item-type-enum';
 
 export class ItemInstanceModel {
   id: number = 0;
   quantity: number | undefined;
   // type:string = "";
-  type:ItemType | undefined;
-  itemRarity: ItemRarity | undefined;
+  type:ItemTypeEnum | undefined;
+  itemRarity: ItemRarityEnum | undefined;
   itemStats: ItemStatsModel[] = []
-
 
 }

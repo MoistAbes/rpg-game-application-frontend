@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import {API_ENDPOINTS} from '../../endpoints/api-endpoints';
 import {HttpClient} from '@angular/common/http';
-import {LoginRequestModel} from '../../models/login-request-model';
 import {Observable} from 'rxjs';
-import {JwtTokenDto} from '../../dto/JwtTokenDto';
-import {CharacterModel} from '../../models/character-model';
+import {CharacterModel} from '../../models/character/character-model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +24,10 @@ export class CharacterApiService {
     const url: string = `${this.apiUrl}${API_ENDPOINTS.CHARACTER_SERVICE.GET_CHARACTER}` + characterId;
     return this.http.get<CharacterModel>(url);
 
+  }
+
+  public createCharacter(characterName: string, userId : number): Observable<number> {
+    return this.http.post<number>(this.apiUrl + API_ENDPOINTS.CHARACTER_SERVICE.CREATE_CHARACTER + characterName + "/" + userId, {})
   }
 
 }

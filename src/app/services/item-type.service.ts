@@ -3,19 +3,19 @@ import {ItemInstanceModel} from '../models/items/instance/Item-instance-model';
 import {HelmetItemInstanceModel} from '../models/items/instance/helmet-item-instance-model';
 import {CommonItemInstanceModel} from '../models/items/instance/common-item-instance-model';
 import {ChestItemInstanceModel} from '../models/items/instance/chest-item-instance-model';
-import {ItemType} from '../enums/ItemType';
+import {ItemTypeEnum} from '../enums/item-type-enum';
 import {ItemTemplate} from '../models/items/template/item-template';
 import {GlovesItemInstanceModel} from '../models/items/instance/gloves-item-instance-model';
 import {BootsItemInstanceModel} from '../models/items/instance/boots-item-instance-model';
 import {ArmorItemInstanceModel} from '../models/items/instance/armor-item-instance-model';
 import {EquipmentItemInstanceModel} from '../models/items/instance/equipment-item-instance-model';
-import {ItemRarity} from '../enums/ItemRarity';
-import {ArmorType} from '../enums/ArmorType';
+import {ItemRarityEnum} from '../enums/item-rarity-enum';
+import {ArmorTypeEnum} from '../enums/armor-type-enum';
 import {SwordItemInstanceModel} from '../models/items/instance/sword-item-instance-model';
 import {WeaponItemInstanceModel} from '../models/items/instance/weapon-item-instance-model';
 import {AxeItemInstanceModel} from '../models/items/instance/axe-item-instance-model';
 import {WeaponItemTemplate} from '../models/items/template/weapon-item-template';
-import {WeaponType} from '../enums/WeaponType';
+import {WeaponTypeEnum} from '../enums/weapon-type-enum';
 
 @Injectable({
   providedIn: 'root'
@@ -35,25 +35,25 @@ export class ItemTypeService {
     let value: unknown;
 
     switch (itemInstance.type) {
-      case ItemType.COMMON_ITEM_INSTANCE:
+      case ItemTypeEnum.COMMON_ITEM_INSTANCE:
         value = (itemInstance as CommonItemInstanceModel).commonItemTemplate[property];
         break;
-      case ItemType.HELMET_ITEM_INSTANCE:
+      case ItemTypeEnum.HELMET_ITEM_INSTANCE:
         value = (itemInstance as HelmetItemInstanceModel).helmetTemplate![property];
         break;
-      case ItemType.CHEST_ITEM_INSTANCE:
+      case ItemTypeEnum.CHEST_ITEM_INSTANCE:
         value = (itemInstance as ChestItemInstanceModel).chestTemplate![property];
         break;
-      case ItemType.GLOVES_ITEM_INSTANCE:
+      case ItemTypeEnum.GLOVES_ITEM_INSTANCE:
         value = (itemInstance as GlovesItemInstanceModel).glovesTemplate![property];
         break;
-      case ItemType.BOOTS_ITEM_INSTANCE:
+      case ItemTypeEnum.BOOTS_ITEM_INSTANCE:
         value = (itemInstance as BootsItemInstanceModel).bootsTemplate![property];
         break;
-      case ItemType.SWORD_ITEM_INSTANCE:
+      case ItemTypeEnum.SWORD_ITEM_INSTANCE:
         value = (itemInstance as SwordItemInstanceModel).swordTemplate![property];
         break;
-      case ItemType.AXE_ITEM_INSTANCE:
+      case ItemTypeEnum.AXE_ITEM_INSTANCE:
         value = (itemInstance as AxeItemInstanceModel).axeTemplate![property];
         break;
       default:
@@ -74,10 +74,10 @@ export class ItemTypeService {
     let value: unknown;
 
     switch (itemInstance.type) {
-      case ItemType.SWORD_ITEM_INSTANCE:
+      case ItemTypeEnum.SWORD_ITEM_INSTANCE:
         value = (itemInstance as SwordItemInstanceModel).swordTemplate![property];
         break;
-      case ItemType.AXE_ITEM_INSTANCE:
+      case ItemTypeEnum.AXE_ITEM_INSTANCE:
         value = (itemInstance as AxeItemInstanceModel).axeTemplate![property];
         break;
       default:
@@ -89,7 +89,7 @@ export class ItemTypeService {
   }
 
 
-  public getItemRarity(itemInstance: ItemInstanceModel | undefined): ItemRarity | undefined {
+  public getItemRarity(itemInstance: ItemInstanceModel | undefined): ItemRarityEnum | undefined {
     if (!itemInstance) return undefined;
     return (itemInstance as EquipmentItemInstanceModel).itemRarity
   }
@@ -122,7 +122,8 @@ export class ItemTypeService {
   }
 
   getItemIconPath(itemInstance: ItemInstanceModel): string {
-    return this.getItemProperty(itemInstance, 'iconPath', 'defaultIconPath');
+    //ToDO tutaj dalem na default punching hand pewnie trzeba to bedzie zmienic zeby tylko do weapon to lecialo
+    return this.getItemProperty(itemInstance, 'iconPath', 'punching-hand.svg');
   }
 
   getItemName(itemInstance: ItemInstanceModel | undefined): string {
@@ -133,14 +134,16 @@ export class ItemTypeService {
     return this.getItemProperty(itemInstance, 'description', 'no item description found');
   }
 
-  getItemArmorType(itemInstance: ItemInstanceModel): ArmorType {
+  getItemArmorType(itemInstance: ItemInstanceModel): ArmorTypeEnum {
     // console.log("get item armor type: ", itemInstance);
-    return (itemInstance as ArmorItemInstanceModel).armorType! as ArmorType
+    return (itemInstance as ArmorItemInstanceModel).armorType! as ArmorTypeEnum
   }
 
-  getWeaponType(itemInstance: ItemInstanceModel): WeaponType {
-    return this.getWeaponProperty(itemInstance, 'weaponType', 'no weapon type found') as WeaponType;
+  getWeaponType(itemInstance: ItemInstanceModel): WeaponTypeEnum {
+    return this.getWeaponProperty(itemInstance, 'weaponType', 'no weapon type found') as WeaponTypeEnum;
 
   }
+
+
 
 }

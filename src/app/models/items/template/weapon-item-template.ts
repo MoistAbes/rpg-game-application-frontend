@@ -1,9 +1,9 @@
 import {ItemTemplate} from './item-template';
-import {WeaponType} from '../../../enums/WeaponType';
+import {WeaponTypeEnum} from '../../../enums/weapon-type-enum';
 
 export class WeaponItemTemplate extends ItemTemplate{
 
-  weaponType: WeaponType | undefined;
+  weaponType: WeaponTypeEnum | undefined;
 
   getItemType(): string {
     return "";
