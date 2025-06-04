@@ -11,6 +11,8 @@ import {MapPageComponent} from './pages/map-page/components/map-page/map-page.co
 import {LocationPageComponent} from './pages/location-page/location-page.component';
 import {HomePageComponent} from './pages/home-page/home-page/home-page.component';
 import {QuestPageComponent} from './pages/quest-page/quest-page.component';
+import {AdminPageComponent} from './pages/admin-page/admin-page.component';
+import {roleGuard} from './global/guard/role.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPageComponent },  // Route for the login page
@@ -22,5 +24,6 @@ export const routes: Routes = [
   { path: 'map', component: MapPageComponent, canActivate: [authGuard ,characterGuard] }, // Guard applied
   { path: 'quests', component: QuestPageComponent, canActivate: [authGuard ,characterGuard] }, // Guard applied
   { path: 'location/:zoneName/:locationName', component: LocationPageComponent, canActivate: [authGuard ,characterGuard] }, // Guard applied
+  { path: 'admin', component: AdminPageComponent, canActivate: [authGuard , roleGuard(["ROLE_ADMIN"])] }, // Guard applied
   { path: '', component: HomePageComponent },  // Route for the home page
 ];

@@ -33,11 +33,11 @@ import {CharacterEquipmentModel} from '../../../../models/character/character-eq
   styleUrl: './character-stats.component.css'
 })
 export class CharacterStatsComponent implements OnInit {
-  // protected readonly getFormattedItemRarity = getFormattedItemRarity;
-  // protected readonly getFormattedArmorType = getFormattedArmorType;
-  // protected readonly isWeapon = isWeapon;
-  // protected readonly getFormattedWeaponType = getFormattedWeaponType;
-  // protected readonly getFormattedItemType = getFormattedItemType;
+  protected readonly getFormattedWeaponType = getFormattedWeaponType;
+  protected readonly getFormattedItemRarity = getFormattedItemRarity;
+  protected readonly getFormattedItemType = getFormattedItemType;
+  protected readonly isWeapon = isWeapon;
+  protected readonly getFormattedArmorType = getFormattedArmorType;
 
   character: CharacterModel | null = null
   protected readonly ItemType = ItemTypeEnum;
@@ -67,7 +67,6 @@ export class CharacterStatsComponent implements OnInit {
   ngOnInit(): void {
     this.characterManager.character$.subscribe(character => {
       this.character = character;
-      console.log("CHARACTER: ", this.character);
 
       if (this.isItemImgLoadedList.length == 0 && this.character != null && this.character.equipment) {
         this.setIsItemImgLoadedList();
@@ -80,19 +79,11 @@ export class CharacterStatsComponent implements OnInit {
   setIsItemImgLoadedList() {
 
     const equipmentSlots: Array<keyof CharacterEquipmentModel> = ['helmet', 'chest', 'gloves', 'boots', 'mainHand'];
-    console.log('test: ', this.character!.equipment![equipmentSlots[0]]);
-    console.log('test: ', this.character!.equipment![equipmentSlots[1]]);
-    console.log('test: ', this.character!.equipment![equipmentSlots[2]]);
-    console.log('test: ', this.character!.equipment![equipmentSlots[3]]);
-    console.log('test: ', this.character!.equipment![equipmentSlots[4]]);
 
 
     this.isItemImgLoadedList = equipmentSlots.map(slot =>
       !this.character?.equipment?.[slot]
     );
-
-
-    console.log("isItemImgLoadedList: ", this.isItemImgLoadedList);
 
   }
 
@@ -248,14 +239,9 @@ export class CharacterStatsComponent implements OnInit {
 
 
   onEquipmentItemImgLoad(equipmentIndex: number) {
-    console.log('equipment item image loaded: ', equipmentIndex);
 
     this.isItemImgLoadedList[equipmentIndex] = true;
   }
 
-  protected readonly getFormattedWeaponType = getFormattedWeaponType;
-  protected readonly getFormattedItemRarity = getFormattedItemRarity;
-  protected readonly getFormattedItemType = getFormattedItemType;
-  protected readonly isWeapon = isWeapon;
-  protected readonly getFormattedArmorType = getFormattedArmorType;
+
 }

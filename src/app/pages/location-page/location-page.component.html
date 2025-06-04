@@ -1,7 +1,8 @@
 <div class="container-fluid  d-flex flex-column">
   <div class="row flex-grow-2">
     <div class="col-12 top-panel d-flex justify-content-center align-items-center">
-      <h3>{{zone?.name}} {{location?.name}}</h3>
+      <button (click)="exitLocation()" class="btn btn-danger">Exit</button>
+      <h3 *ngIf="locationInstance" >{{locationInstance.location?.zone?.name}} {{locationInstance.location?.name}}</h3>
     </div>
   </div>
 

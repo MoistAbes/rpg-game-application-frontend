@@ -5,14 +5,12 @@ import {catchError, finalize} from 'rxjs';
 import {Router} from '@angular/router';
 import {JwtService} from '../services/jwt.service';
 import {LoadingService} from '../services/loading.service';
-import {CharacterLocalService} from '../services/character-local.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);  // Inject Router
   const toastr = inject(ToastrService); // Inject ToastrService
   const jwtService = inject(JwtService);
   const loadingService = inject(LoadingService); // Inject LoadingService
-  const characterLocalService = inject(CharacterLocalService)
 
   // Check if the request has the "X-Skip-Loading" header
   const showLoadingScreen = !req.headers.has('X-Skip-Loading');
@@ -24,7 +22,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     finalize(() => loadingService.hide()), // Always hide loading after request
     catchError((error: HttpErrorResponse) => {
 
-      const errorMessage = error.error?.message || 'An unknown error occurred';
+      const errorMessage = error.error?.message || error.error?.token || 'An unknown error occurred';
 
       switch (error.status) {
         case 400:
@@ -32,7 +30,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           break;
         case 401:
           jwtService.removeToken()
-          characterLocalService.removeCharacterData();
           router.navigate(['/login']);  // Redirect to login page
           toastr.warning(errorMessage);
           console.log("Error: ", error)

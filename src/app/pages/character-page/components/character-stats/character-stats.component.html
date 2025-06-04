@@ -2,7 +2,7 @@
   <div *ngIf="character && character.equipment" class="stats-container">
     <mat-card class="character-stats-card">
       <mat-card-header>
-        <mat-card-title class="character-name-text">{{ character.name }}</mat-card-title>
+        {{ character.name }}
         <mat-card-subtitle>Level {{ character.level }}</mat-card-subtitle>
       </mat-card-header>
 
@@ -187,20 +187,40 @@
       <mat-card-content>
 
         <div class="health-bar-container">
+          <span class="bar-label">HP</span>
           <div class="health-bar" [ngStyle]="{ 'width': getHealthPercentage() + '%' }">
-            <p class="health-text">
-              {{ character.characterStats?.currentHealth }} / {{ character.characterStats?.maxHealth }}
-            </p>
+
           </div>
+          <p class="health-text">
+            {{ character.characterStats?.currentHealth }} / {{ character.characterStats?.maxHealth }}
+          </p>
         </div>
 
         <div style="margin-top: 3px" class="experience-bar-container">
+          <span class="bar-label">XP</span>
           <div class="experience-bar" [ngStyle]="{ 'width': getExperiencePercentage() + '%' }">
-            <p class="experience-text">
-              {{ character.experience }} / {{ character.nextLevelExperience }}
-            </p>
+
           </div>
+          <p class="experience-text">
+            {{ character.experience }} / {{ character.nextLevelExperience }}
+          </p>
         </div>
+
+<!--        <div class="health-bar-container">-->
+<!--          <div class="health-bar" [ngStyle]="{ 'width': getHealthPercentage() + '%' }">-->
+<!--            <p class="health-text">-->
+<!--              {{ character.characterStats?.currentHealth }} / {{ character.characterStats?.maxHealth }}-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div style="margin-top: 3px" class="experience-bar-container">-->
+<!--          <div class="experience-bar" [ngStyle]="{ 'width': getExperiencePercentage() + '%' }">-->
+<!--            <p class="experience-text">-->
+<!--              {{ character.experience }} / {{ character.nextLevelExperience }}-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
 
 
 

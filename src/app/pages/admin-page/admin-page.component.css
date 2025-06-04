@@ -1,0 +1,22 @@
+.admin-navbar {
+  background: #9af3e4;
+  height: 50px;
+  display: flex;              /* Make children align horizontally */
+  align-items: center;        /* Vertically center the text */
+  gap: 20px;                  /* Optional: space between elements */
+  padding: 0 15px;            /* Optional: add horizontal padding */
+}
+.admin-navbar p {
+  margin: 0;
+  cursor: pointer;
+  color: black;
+}
+
+.admin-navbar p:hover {
+  background: #b6f6eb;
+}
+
+.admin-navbar p.active {
+  font-weight: bold;
+  border-bottom: 2px solid #000;
+}

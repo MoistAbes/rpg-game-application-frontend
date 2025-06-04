@@ -3,9 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import {NavbarComponent} from './global/components/navbar/navbar/navbar.component';
 import {NgIf} from '@angular/common';
 import {LoadingService} from './global/services/loading.service';
-import {JwtService} from './global/services/jwt.service';
 import {SidebarComponent} from './global/components/sidebar/sidebar.component';
-import {CharacterLocalService} from './global/services/character-local.service';
+import {JwtService} from './global/services/jwt.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +23,7 @@ export class AppComponent implements OnInit {
   isLoading: boolean = false;
 
   constructor(private loadingService: LoadingService,
-              protected characterLocalService: CharacterLocalService) {}
+              protected jwtService: JwtService,) {}
 
   /*
     Angular’s Change Detection Runs Synchronously

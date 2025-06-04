@@ -7,8 +7,8 @@ import {FormsModule} from '@angular/forms';
 import {CenterModalComponent} from '../../../../global/components/center-modal/center-modal.component';
 import {JwtService} from '../../../../global/services/jwt.service';
 import {CharacterApiService} from '../../../../services/api/character-api.service';
-import {CharacterLocalService} from '../../../../global/services/character-local.service';
 import {CharacterModel} from '../../../../models/character/character-model';
+import {AuthService} from '../../../../global/services/auth.service';
 
 @Component({
   selector: 'app-character-selection-page',
@@ -31,9 +31,9 @@ export class CharacterSelectionPageComponent implements OnInit {
 
 
   constructor(private router: Router,
+              private authService: AuthService,
               private jwtService: JwtService,
-              private characterService: CharacterApiService,
-              private characterLocalService: CharacterLocalService,) {
+              private characterService: CharacterApiService) {
   }
 
   ngOnInit(): void {
@@ -64,11 +64,20 @@ export class CharacterSelectionPageComponent implements OnInit {
 
   playCharacter(id: number, name: string) {
 
-    //save to local
-    this.characterLocalService.saveCharacterData(id.toString(), name)
+    this.authService.selectCharacter(id).subscribe({
+      next: generatedToken => {
+        this.jwtService.saveToken(generatedToken.token);
+      },
+      error: () => {},
+      complete: () => {
+        console.log(this.jwtService.getToken())
+        //save to local
+        // this.characterLocalService.saveCharacterData(id.toString(), name)
 
-    //move to character page
-    this.router.navigate(['/character']);
+        //move to character page
+        this.router.navigate(['/character']);
+      },
+    })
 
 
   }
@@ -76,11 +85,20 @@ export class CharacterSelectionPageComponent implements OnInit {
   createCharacter() {
     this.characterService.createCharacter(this.newCharacterName! ,this.jwtService.getUserIdFromToken()).subscribe({
       next: (characterId) => {
-        this.characterLocalService.saveCharacterData(characterId.toString(), "")
+        // this.characterLocalService.saveCharacterData(characterId.toString(), "")
+        this.authService.selectCharacter(characterId).subscribe({
+          next: generatedToken => {
+            this.jwtService.saveToken(generatedToken.token);
+          },
+          error: () => {},
+          complete: () => {
+            this.router.navigate(['/character']);
+          },
+        });
+
       },
       error: () => {},
       complete: () => {
-        this.router.navigate(['/character']);
       },
     })
   }

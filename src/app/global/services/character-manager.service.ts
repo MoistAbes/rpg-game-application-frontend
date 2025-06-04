@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {ItemInstanceModel} from '../../models/items/instance/Item-instance-model';
 import {CharacterApiService} from '../../services/api/character-api.service';
-import {CharacterLocalService} from './character-local.service';
 import {InventoryApiService} from '../../services/api/inventory-api.service';
 import {EquipmentApiService} from '../../services/api/equipment-api.service';
 import {ToastrService} from 'ngx-toastr';
@@ -11,6 +10,7 @@ import {CharacterStatsApiService} from '../../services/api/character-stats-api.s
 import {EquipmentItemTypeService} from '../../services/equipment-item-type.service';
 import {CharacterModel} from '../../models/character/character-model';
 import {InventorySlotModel} from '../../models/character/inventory-slot-model';
+import {JwtService} from './jwt.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,8 @@ export class CharacterManagerService {
   constructor(private characterApiService: CharacterApiService,
               private inventoryApiService: InventoryApiService,
               private equipmentApiService: EquipmentApiService,
-              private characterLocalService: CharacterLocalService,
+              // private characterLocalService: CharacterLocalService,
+              private jwtService: JwtService,
               private characterStatsApiService: CharacterStatsApiService,
               private equipmentItemTypeService: EquipmentItemTypeService,
               private toastService: ToastrService,) {}
@@ -450,7 +451,7 @@ export class CharacterManagerService {
   /** Load character with inventory and equipment */
   public loadCharacter() {
 
-    this.characterApiService.getCharacter(this.characterLocalService.getId()).subscribe({
+    this.characterApiService.getCharacter(this.jwtService.getCharacterIdFromToken()).subscribe({
       next: character => {
         this.characterSubject.next(character); // Set initial character
         this.loadInventory();
@@ -463,10 +464,8 @@ export class CharacterManagerService {
 
   /** Load inventory separately */
   public loadInventory() {
-    this.inventoryApiService.getInventory(this.characterLocalService.getId()).subscribe({
+    this.inventoryApiService.getInventory(this.jwtService.getCharacterIdFromToken()).subscribe({
       next: inventory => {
-
-        console.log("INVENTORY loaded: ", inventory);
 
         this.updateCharacter({ inventory }); // Merge inventory into character
 
@@ -477,7 +476,7 @@ export class CharacterManagerService {
 
   /** Load equipment separately */
   private loadEquipment() {
-    this.equipmentApiService.getCharacterEquipment(this.characterLocalService.getId()).subscribe({
+    this.equipmentApiService.getCharacterEquipment(this.jwtService.getCharacterIdFromToken()).subscribe({
       next: equipment => {
         this.updateCharacter({ equipment }); // Merge equipment into character
 

@@ -20,4 +20,10 @@ export class AuthService {
     return this.http.post<JwtTokenDto>(url , loginRequest)
   }
 
+  public selectCharacter(characterId: number): Observable<JwtTokenDto> {
+    const url: string = `${this.apiUrl}${API_ENDPOINTS.AUTH_SERVICE.SELECT_CHARACTER}` + characterId;
+    return this.http.post<JwtTokenDto>(url , {})
+
+  }
+
 }

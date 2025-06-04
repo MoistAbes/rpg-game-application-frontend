@@ -1,127 +1,434 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:wght@300;400;600&display=swap');
 
+/* Main container styling */
+.main-container {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Card styling with parchment-like background */
 .character-stats-card {
   max-width: 500px;
   margin: 20px auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background-image: url('https://www.transparenttextures.com/patterns/parchment.png'),
+  linear-gradient(to bottom, #f5e7c1, #e8d6a7);
+  border: 3px solid #8B4513;
+  overflow: hidden;
+  position: relative;
 }
 
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
+/* Add decorative corners to the card */
+.character-stats-card::before,
+.character-stats-card::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  /*background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><path d="M0,0 L30,0 L30,5 C20,5 5,20 5,30 L0,30 Z" fill="%238B4513"/></svg>');*/
+  background-size: contain;
 }
 
-.stat-item {
-  text-align: center;
+.character-stats-card::before {
+  top: 0;
+  left: 0;
+  transform: rotate(0deg);
 }
 
+.character-stats-card::after {
+  top: 0;
+  right: 0;
+  transform: rotate(90deg);
+}
+
+/* Character name and level styling */
 mat-card-header {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  padding: 20px 0 10px;
+  background: rgba(139, 69, 19, 0.1);
+  border-bottom: 2px solid rgba(139, 69, 19, 0.3);
 }
 
 mat-card-title {
-  font-size: 1.5rem;
+  /*font-family: 'MedievalSharp', cursive;*/
+  font-size: 2rem;
   font-weight: 600;
+  color: #5D4037;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  margin-bottom: 5px;
 }
 
 mat-card-subtitle {
-  font-size: 1.1rem;
-  color: #666;
-}
-
-mat-card-content p {
+  /*font-family: 'MedievalSharp', cursive;*/
   font-size: 1.2rem;
-  font-weight: 500;
-  color: #333;
+  color: #000000;
+  background: rgba(139, 69, 19, 0.1);
+  padding: 3px 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(139, 69, 19, 0.3);
 }
 
-mat-divider {
-  margin: 10px 0;
+/* Equipment grid styling */
+.container {
+  padding: 20px 0;
+  margin: 0 auto;
 }
 
-mat-card-footer {
-  padding: 16px 0;
-}
-
-.character-name-text {
-  color: #393939;
-}
-
-/*Equipment*/
-
-.equipment-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 columns */
-  grid-template-rows: repeat(2, 1fr); /* 2 rows */
-  gap: 5px; /* Smaller space between grid items */
-  width: 80%; /* Adjust width of the grid container */
-  max-width: 500px; /* Optional: limit the maximum width of the grid */
-  margin: 0 auto; /* Center the grid horizontally */
-}
-
-mat-card-header {
+.item-slot {
+  position: relative;
+  border: 3px solid #8B4513;
+  border-radius: 10px;
+  padding: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center; /* Centers content horizontally */
-  text-align: center; /* Ensures text alignment */
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to bottom right, #f9f9f9, #e0e0e0);
+  aspect-ratio: 1;
+  text-align: center;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin: 5px;
 }
-/*health bar*/
+
+/*.item-slot:hover {*/
+/*  transform: translateY(-2px);*/
+/*  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1), 0 6px 10px rgba(0, 0, 0, 0.2);*/
+/*  border-color: #A1887F;*/
+/*}*/
+
+.item-slot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, transparent 70%, rgba(139, 69, 19, 0.1) 100%);
+  border-radius: 8px;
+}
+
+.item-icon {
+  cursor: pointer;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+  transition: transform 0.2s ease;
+}
+
+/*.item-icon:hover {*/
+/*  transform: scale(1.05);*/
+/*}*/
+
+/* Health bar styling */
 .health-bar-container {
-  height: 20px;
+  height: 25px;
   background-color: #444;
   overflow: hidden;
   border: 2px solid #222;
+  border-radius: 6px;
+  margin: 15px 20px 5px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
 
 .health-bar {
   height: 100%;
-  background-color: #8f0004; /* Green for healthy */
+  background: linear-gradient(to right, #8f0004, #cf0004);
   transition: width 0.3s ease-in-out;
+  box-shadow: 0 0 8px #ff0000;
+  position: relative;
+  overflow: hidden;
+}
 
+.health-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom,
+  rgba(255, 255, 255, 0.2) 0%,
+  rgba(255, 255, 255, 0) 50%,
+  rgba(0, 0, 0, 0.1) 100%);
 }
 
 .health-text {
-  color: white; /* Makes text readable */
-  font-size: 12px !important;
+  color: white;
+  font-size: 14px !important;
   font-weight: bold;
   margin: 0;
-
   position: absolute;
   left: 50%;
-  transform: translateX(-50%); /* Center dynamically */
-
-  white-space: nowrap; /* Prevents text from breaking */
-  max-height: 100%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  z-index: 1;
 }
 
-/*experience bar*/
+/* Experience bar styling */
 .experience-bar-container {
   height: 20px;
   background-color: #444;
   overflow: hidden;
   border: 2px solid #222;
+  border-radius: 6px;
+  margin: 5px 20px 15px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
 
 .experience-bar {
   height: 100%;
-  background-color: #e8c200; /* Green for healthy */
+  background: linear-gradient(to right, #c9a000, #e8c200);
   transition: width 0.3s ease-in-out;
+  box-shadow: 0 0 8px #ffcc00;
+  position: relative;
+  overflow: hidden;
+}
 
+.experience-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom,
+  rgba(255, 255, 255, 0.2) 0%,
+  rgba(255, 255, 255, 0) 50%,
+  rgba(0, 0, 0, 0.1) 100%);
 }
 
 .experience-text {
-  color: white; /* Makes text readable */
+  color: white;
   font-size: 12px !important;
   font-weight: bold;
   margin: 0;
-
   position: absolute;
   left: 50%;
-  transform: translateX(-50%); /* Center dynamically */
-
-  white-space: nowrap; /* Prevents text from breaking */
-  max-height: 100%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  z-index: 1;
 }
+
+/* Stats styling */
+mat-card-content {
+  padding: 0 15px 15px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 5px;
+  background: rgba(139, 69, 19, 0.05);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid rgba(139, 69, 19, 0.2);
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-item strong {
+  /*font-family: 'MedievalSharp', cursive;*/
+  color: #5D4037;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.stat-item p {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #8D6E63;
+  margin: 0;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* Divider styling */
+mat-divider {
+  margin: 0;
+  border-top-color: rgba(139, 69, 19, 0.3);
+}
+
+.bar-label {
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  /*font-family: 'MedievalSharp', cursive;*/
+  font-weight: bold;
+  color: #5D4037;
+  z-index: 2;
+}
+
+/* Hover tooltips */
+/*[class^="hover-preview"] {*/
+/*  background-image: url('https://www.transparenttextures.com/patterns/parchment.png'),*/
+/*  linear-gradient(to bottom, #f5e7c1, #e8d6a7);*/
+/*  border-radius: 8px;*/
+/*  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);*/
+/*  font-family: 'Poppins', sans-serif;*/
+/*}*/
+
+/* Container loader */
+.container-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.spinner {
+  border: 3px solid rgba(139, 69, 19, 0.3);
+  border-top: 3px solid #8B4513;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/*.character-stats-card {*/
+/*  max-width: 500px;*/
+/*  margin: 20px auto;*/
+/*  border-radius: 10px;*/
+/*  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.stat-row {*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  margin-bottom: 15px;*/
+/*}*/
+
+/*.stat-item {*/
+/*  text-align: center;*/
+/*}*/
+
+/*mat-card-header {*/
+/*  text-align: center;*/
+/*}*/
+
+/*mat-card-title {*/
+/*  font-size: 1.5rem;*/
+/*  font-weight: 600;*/
+/*}*/
+
+/*mat-card-subtitle {*/
+/*  font-size: 1.1rem;*/
+/*  color: #666;*/
+/*}*/
+
+/*mat-card-content p {*/
+/*  font-size: 1.2rem;*/
+/*  font-weight: 500;*/
+/*  color: #333;*/
+/*}*/
+
+/*mat-divider {*/
+/*  margin: 10px 0;*/
+/*}*/
+
+/*mat-card-footer {*/
+/*  padding: 16px 0;*/
+/*}*/
+
+/*.character-name-text {*/
+/*  color: #393939;*/
+/*}*/
+
+/*!*Equipment*!*/
+
+/*.equipment-grid {*/
+/*  display: grid;*/
+/*  grid-template-columns: repeat(5, 1fr); !* 5 columns *!*/
+/*  grid-template-rows: repeat(2, 1fr); !* 2 rows *!*/
+/*  gap: 5px; !* Smaller space between grid items *!*/
+/*  width: 80%; !* Adjust width of the grid container *!*/
+/*  max-width: 500px; !* Optional: limit the maximum width of the grid *!*/
+/*  margin: 0 auto; !* Center the grid horizontally *!*/
+/*}*/
+
+/*mat-card-header {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  align-items: center; !* Centers content horizontally *!*/
+/*  text-align: center; !* Ensures text alignment *!*/
+/*}*/
+/*!*health bar*!*/
+/*.health-bar-container {*/
+/*  height: 20px;*/
+/*  background-color: #444;*/
+/*  overflow: hidden;*/
+/*  border: 2px solid #222;*/
+/*}*/
+
+/*.health-bar {*/
+/*  height: 100%;*/
+/*  background-color: #8f0004; !* Green for healthy *!*/
+/*  transition: width 0.3s ease-in-out;*/
+
+/*}*/
+
+/*.health-text {*/
+/*  color: white; !* Makes text readable *!*/
+/*  font-size: 12px !important;*/
+/*  font-weight: bold;*/
+/*  margin: 0;*/
+
+/*  position: absolute;*/
+/*  left: 50%;*/
+/*  transform: translateX(-50%); !* Center dynamically *!*/
+
+/*  white-space: nowrap; !* Prevents text from breaking *!*/
+/*  max-height: 100%;*/
+/*}*/
+
+/*!*experience bar*!*/
+/*.experience-bar-container {*/
+/*  height: 20px;*/
+/*  background-color: #444;*/
+/*  overflow: hidden;*/
+/*  border: 2px solid #222;*/
+/*}*/
+
+/*.experience-bar {*/
+/*  height: 100%;*/
+/*  background-color: #e8c200; !* Green for healthy *!*/
+/*  transition: width 0.3s ease-in-out;*/
+
+/*}*/
+
+/*.experience-text {*/
+/*  color: white; !* Makes text readable *!*/
+/*  font-size: 12px !important;*/
+/*  font-weight: bold;*/
+/*  margin: 0;*/
+
+/*  position: absolute;*/
+/*  left: 50%;*/
+/*  transform: translateX(-50%); !* Center dynamically *!*/
+
+/*  white-space: nowrap; !* Prevents text from breaking *!*/
+/*  max-height: 100%;*/
+/*}*/
 
 
