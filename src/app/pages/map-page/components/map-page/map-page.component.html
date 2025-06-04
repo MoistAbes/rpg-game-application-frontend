@@ -11,9 +11,18 @@
           placeholder="Strefa">
         </ng-select>
       </div>
-<!--      <button (click)="modal.show()">Otwórz Modal</button>-->
-
-
+      <div *ngIf="timeCycle" class="col-2">
+        <div *ngIf="timeCycle.currentTimeOfDay == 'NIGHT'">
+          Time cycle
+          <img style="background: #1E90FF; border: #4efaff 1px solid" ngSrc="/map/moon-icon.svg" height="30" width="30" alt="">
+           left {{timeCycle.minutesUntilNextCycle}} min
+        </div>
+        <div *ngIf="timeCycle.currentTimeOfDay == 'DAY'">
+          Time cycle
+          <img style="background: #1E90FF; border: #4efaff 1px solid" ngSrc="/map/sun-icon.svg" height="30" width="30" alt="">
+          left {{timeCycle.minutesUntilNextCycle}} min
+        </div>
+      </div>
     </div>
 
   </div>
@@ -33,20 +42,39 @@
            [style.top.px]="zone.positionY"
            [style.left.px]="zone.positionX"
            (click)="selectZone(zone); modal.show()">
-        {{ zone.name }}
 
-        <!--item image loader-->
-        <div class="container-loader" *ngIf="!isZoneImgLoadedList[i]">
-          <div class="spinner"></div>
+        <div style="display: flex; align-items: center;">
+          <!-- p element takes available space and centers text -->
+          <p style="margin: 0; flex: 1; text-align: center;">
+            {{ zone.name }}
+          </p>
+          <!-- images container (optional gap added for spacing) -->
+          <div style="display: flex; gap: 5px;">
+            <ng-container *ngFor="let zoneStatus of zone.statuses">
+              <img [ngSrc]="getZoneIconPath(zoneStatus.name)" height="20" width="20" alt="">
+            </ng-container>
+          </div>
         </div>
 
-        <img
-          class="zone-img"
-          ngSrc="/map/{{zone.iconPath}}"
-          alt="Forest zone"
-          height="100"
-          width="100"
-          (load)="onZoneImgLoad(i)"> <!-- Pass the correct index -->
+
+
+
+
+        <div>
+          <!--item image loader-->
+          <div class="container-loader" *ngIf="!isZoneImgLoadedList[i]">
+            <div class="spinner"></div>
+          </div>
+
+          <img
+            class="zone-img"
+            ngSrc="/map/{{zone.iconPath}}"
+            alt="Forest zone"
+            height="100"
+            width="100"
+            (load)="onZoneImgLoad(i)"> <!-- Pass the correct index -->
+        </div>
+
       </div>
 
     </div>

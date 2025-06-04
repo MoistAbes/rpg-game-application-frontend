@@ -1,5 +1,6 @@
 import {LocationModel} from './location-model';
 import {EnemyTypeEnum} from '../enums/enemy-type-enum';
+import {ZoneStatusEventModel} from './zone-status-event-model';
 
 export class ZoneModel {
 
@@ -11,9 +12,8 @@ export class ZoneModel {
   positionY: number = 0;
 
   iconPath: string = '';
-
   locations: LocationModel[] = [];
-
   allowedEnemyTypes: EnemyTypeEnum[] = [];
+  statuses: ZoneStatusEventModel[] = []
 
 }

@@ -51,4 +51,45 @@ export class JwtService {
     }
   }
 
+  getUserRolesFromToken(): string[] {
+    const token = this.getToken();
+    if (!token) return [];
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decode payload
+      return payload.roles || []; // Extract username
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return [];
+    }
+  }
+
+
+
+  //ToDO trzeba to przerobic na number i wszystkie metody korzystajace z tego na number
+  getCharacterIdFromToken(): string {
+    const token = this.getToken();
+    if (!token) return "";
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decode payload
+      return payload.characterId || null; // Extract username
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return "";
+    }
+  }
+
+  isCharacterIdPresent(): boolean {
+    const characterId: string | null = this.getCharacterIdFromToken();
+
+    if (characterId === null || characterId === undefined) {
+      return false;
+    }
+
+    return !(characterId.length == 0 || characterId == "0");
+
+
+  }
+
 }

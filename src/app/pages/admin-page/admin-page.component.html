@@ -1,0 +1,17 @@
+<!-- NAV -->
+<div class="admin-navbar">
+  <p
+    (click)="setPanel('users')"
+    [class.active]="activePanel === 'users'">Users</p>
+  <p
+    (click)="setPanel('zones')"
+    [class.active]="activePanel === 'zones'">Zones</p>
+</div>
+
+<!-- CONTENT -->
+<div *ngIf="activePanel === 'users'">
+  <app-admin-users-page></app-admin-users-page>
+</div>
+<div *ngIf="activePanel === 'zones'">
+  <app-admin-zones-page></app-admin-zones-page>
+</div>

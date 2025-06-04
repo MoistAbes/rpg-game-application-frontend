@@ -16,7 +16,7 @@
           <a class="nav-link" routerLink="/register">Register</a>
         </li>
 
-        <li *ngIf="jwtService.hasToken() && characterLocalService.hasCharacterData()">
+        <li *ngIf="jwtService.hasToken() && jwtService.isCharacterIdPresent()">
           <div class="inline-container">
             <img ngSrc="/icons/navbar/coins.svg" class="gold-icon" alt="gold" height="16" width="16">
             <p>{{characterManagerService.getCharacterGoldAmount()}}</p>
@@ -27,12 +27,13 @@
       <ul *ngIf="jwtService.hasToken()" class="navbar-nav ms-auto">
         <li style="position: relative" class="nav-item">
           <a style="padding: 0; margin: 0; font-size: 11px" (click)="toggleMenu($event)" class="nav-link cursor-pointer">{{ jwtService.getUsernameFromToken() }}</a>
-          <p style="padding: 0; margin: 0; font-size: 9px" *ngIf="characterLocalService.hasCharacterData()" class="nav-link cursor-pointer" (click)="toggleMenu($event)">Playing as {{ characterLocalService.getName() }}</p>
+          <p style="padding: 0; margin: 0; font-size: 9px" *ngIf="jwtService.isCharacterIdPresent()" class="nav-link cursor-pointer" (click)="toggleMenu($event)">Playing as</p>
 
           <!-- Dropdown Menu -->
           <ul (mouseleave)="closeMenu($event)"  class="dropdown-menu dropdown-menu-custom" [class.show]="isMenuOpen" >
             <li style="padding: 0; margin: 0; font-size: 11px" (click)="routeToCharacterSelection()"><a routerLink="/character-selection" class="dropdown-item cursor-pointer dropdown-item-custom">Change Character</a></li>
             <li style="padding: 0; margin: 0; font-size: 11px" (click)="logout()"><a routerLink="/login" class="dropdown-item cursor-pointer dropdown-item-custom">Logout</a></li>
+            <li style="padding: 0; margin: 0; font-size: 11px" ><a routerLink="/admin" class="dropdown-item cursor-pointer dropdown-item-custom">Admin</a></li>
             <li style="padding: 0; margin: 0; font-size: 11px" (click)="isMenuOpen = false"><a class="dropdown-item cursor-pointer dropdown-item-custom">Settings</a></li>
           </ul>
         </li>

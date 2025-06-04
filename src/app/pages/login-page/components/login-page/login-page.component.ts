@@ -46,7 +46,8 @@ export class LoginPageComponent {
       this.authService.login(new LoginRequestModel(this.username, this.password)).subscribe({
         next: generatedToken => {
           this.jwtService.saveToken(generatedToken.token);
-          console.log("Generated token: ", this.jwtService.getToken())
+          // console.log("Generated token: ", this.jwtService.getToken())
+          // console.log("roles: ", this.jwtService.getUserRolesFromToken())
         },
         error: err => {
           console.log("Error happened: ", err);

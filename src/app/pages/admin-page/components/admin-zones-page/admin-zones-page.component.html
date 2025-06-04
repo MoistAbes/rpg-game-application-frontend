@@ -1,0 +1,129 @@
+<div id="global-loader" *ngIf="showCurtain" xmlns="http://www.w3.org/1999/html"></div>
+
+<div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Enemy types</th>
+      <th scope="col">Statuses</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container  *ngFor="let zone of zones">
+      <!-- Wiersz strefy -->
+      <tr (click)="onZoneClicked(zone)" >
+        <td>{{zone.id}}</td>
+        <td>{{zone.name}}</td>
+        <td>
+          <p *ngFor="let enemyType of zone.allowedEnemyTypes">
+            {{enemyType}}
+          </p>
+        </td>
+        <td>
+          <p *ngFor="let status of zone.statuses">
+            {{status.name}}
+          </p>
+        </td>
+        <td><button (click)="modal.show(); onZoneEditClicked()" class="btn btn-info"><fa-icon [icon]="faEdit"></fa-icon>
+        </button></td>
+      </tr>
+      <!-- Wiersze lokacji dla danej strefy -->
+      <tr *ngIf="zone.id == selectedZoneCopy.id">
+        <td colspan="5">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Location ID</th>
+              <th>Name</th>
+              <th>Allowed tiers</th>
+              <th>Min enemy lvl.</th>
+              <th>Max enemy lvl.</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let location of zone.locations">
+              <td>{{location.id}}</td>
+              <td>{{location.name}}</td>
+              <td>{{location.allowedTiers}}</td>
+              <td>{{location.minEnemyLevel}}</td>
+              <td>{{location.maxEnemyLevel}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<app-center-modal [isOpen]="showModal" (closed)="onModalClose()" #modal>
+
+  <!-- Tutaj wstawiasz zawartość modalu -->
+  <div class="row">
+    <div class="col-12">
+      <label style="color: black">Name</label>
+      <input [(ngModel)]="selectedZoneCopy.name" class="form-control">
+    </div>
+    <div class="col-12">
+      <label style="color: black">Description</label>
+      <textarea [(ngModel)]="selectedZoneCopy.description" class="form-control"> </textarea>
+    </div>
+    <div class="col-6">
+      <label style="color: black">Position X</label>
+      <input type="number" [(ngModel)]="selectedZoneCopy.positionX" class="form-control">
+    </div>
+    <div class="col-6">
+    <label style="color: black">Position Y</label>
+      <input type="number" [(ngModel)]="selectedZoneCopy.positionY" class="form-control">
+    </div>
+    <div class="col-12">
+      <label style="color: black">Icon path</label>
+      <input type="text" [(ngModel)]="selectedZoneCopy.iconPath" class="form-control">
+    </div>
+
+    <div class="col-12">
+      <label style="color: black">Enemy types</label>
+      <div class="enemy-types-container">
+        <!-- Lista aktualnych typów -->
+        <div class="current-types">
+          <h3>Aktualne typy przeciwników:</h3>
+          <div class="types-list">
+            <div class="type-item" *ngFor="let type of selectedZoneCopy.allowedEnemyTypes">
+              <p class="m-0" style="color: black">{{ type }}</p>
+              <button class="remove-btn" (click)="removeType(type)">✖</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selektor do dodawania nowych typów -->
+        <div class="type-selector">
+          <h3>Dodaj nowe typy:</h3>
+          <ng-select
+            [items]="enemyTypes"
+            [bindLabel]="'type'"
+            [bindValue]="'id'"
+            [(ngModel)]="selectedEnemyTypes"
+            [multiple]="true"
+            placeholder="Wybierz typy przeciwników"
+            [closeOnSelect]="false"
+          >
+          </ng-select>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button class="btn btn-warning m-1">Cancel</button>
+      <button class="btn btn-success m-1 float-end">Save</button>
+    </div>
+  </div>
+
+</app-center-modal>
+

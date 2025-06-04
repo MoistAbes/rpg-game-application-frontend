@@ -10,16 +10,18 @@ import {CharacterManagerService} from '../../global/services/character-manager.s
 import {ItemTypeService} from '../../services/item-type.service';
 import {CombatApiService} from '../../services/api/combat-api.service';
 import {SoundService} from '../../global/services/sound.service';
-import {ZoneDbService} from '../../global/services/zone-db.service';
 import {ItemInstanceApiService} from '../../services/api/item-instance-api.service';
 import {EnemyTypeEnum} from '../../enums/enemy-type-enum';
 import {GenerateEnemyRequest} from '../../dto/request/generate-enemy-request';
-
 import {EnemyRankEnum} from '../../enums/enemy-rank-enum';
 import {CombatResultModel} from '../../models/combat/combat-result-model';
 import {CombatRequestModel} from '../../dto/request/combat-request-model';
 import {CombatLogModel} from '../../models/combat/combat-log-model';
 import {CharacterModel} from '../../models/character/character-model';
+import {LocationInstanceApiService} from '../../services/api/location-instance-api.service';
+import {LocationInstanceLocalService} from '../../global/services/location-instance-local.service';
+import {Router} from '@angular/router';
+import {LocationInstanceModel} from '../../models/location-instance-model';
 
 @Component({
   selector: 'app-location-page',
@@ -36,8 +38,7 @@ import {CharacterModel} from '../../models/character/character-model';
 })
 export class LocationPageComponent implements OnInit {
 
-  zone: ZoneModel | undefined;
-  location: LocationModel | undefined;
+  locationInstance: LocationInstanceModel | null = null;
 
   enemyTemplateIds: number[] = [];
 
@@ -49,10 +50,8 @@ export class LocationPageComponent implements OnInit {
   combatResult: CombatResultModel | undefined;
   combatLog: string = "";
 
-
   enemy: EnemyInstanceModel | undefined;
   isEnemyImageLoaded: boolean = false;
-
 
 
   constructor(
@@ -61,16 +60,15 @@ export class LocationPageComponent implements OnInit {
               protected itemTypeService: ItemTypeService,
               protected combatApiService: CombatApiService,
               private soundService: SoundService,
-              private zoneDbService: ZoneDbService,
-              private itemInstanceApiService: ItemInstanceApiService,) {}
+              private locationInstanceApiService: LocationInstanceApiService,
+              private locationInstanceLocalService: LocationInstanceLocalService,
+              private itemInstanceApiService: ItemInstanceApiService,
+              private router: Router) {}
 
 
   async ngOnInit() {
 
-    // Load the zone and location from IndexedDB
-    this.zone = await this.zoneDbService.getZone();
-    this.location = await this.zoneDbService.getLocation();
-
+    this.locationInstance = this.locationInstanceLocalService.locationInstance;
     this.loadEnemyTemplateIds();
 
     this.characterManagerService.character$.subscribe(
@@ -83,10 +81,11 @@ export class LocationPageComponent implements OnInit {
 
   loadEnemyTemplateIds() {
 
-    const enemyTypes: EnemyTypeEnum[] = this.zone?.allowedEnemyTypes
-      .filter((e): e is EnemyTypeEnum => e !== undefined) || [];
+    console.log("location local: ", this.locationInstanceLocalService.locationInstance);
+    console.log("LOCATION location instance: ", this.locationInstance)
 
-    const allowedTiers: number[] = this.location?.allowedTiers.filter((e) => e !== undefined) || [];
+    const enemyTypes: EnemyTypeEnum[] = this.locationInstance?.location?.zone?.allowedEnemyTypes.filter((e): e is EnemyTypeEnum => e !== undefined) || [];
+    const allowedTiers: number[] = this.locationInstance?.location?.allowedTiers?.filter((e) => e !== undefined) || [];
 
     console.log("enemy types: ", enemyTypes)
     console.log("allowedTiers: ", allowedTiers)
@@ -114,8 +113,8 @@ export class LocationPageComponent implements OnInit {
   createGenerateEnemyRequest(): GenerateEnemyRequest {
     const request = new GenerateEnemyRequest();
     request.enemyTemplateId = this.randomizeEnemySelection();
-    request.minEnemyLevel = this.location?.minEnemyLevel
-    request.maxEnemyLevel = this.location?.maxEnemyLevel
+    request.minEnemyLevel = this.locationInstance?.location?.minEnemyLevel
+    request.maxEnemyLevel = this.locationInstance?.location?.maxEnemyLevel
 
 
     return request;
@@ -324,5 +323,23 @@ export class LocationPageComponent implements OnInit {
 
   addActionToCombatLog(log: string) {
     this.combatLog += log + "\n";
+  }
+
+  exitLocation() {
+
+    console.log("location instance id: ", this.locationInstanceLocalService.locationInstance!.id)
+
+    this.locationInstanceApiService.deleteLocationInstance(this.locationInstanceLocalService.locationInstance!.id).subscribe({
+      next: result => {},
+      error: err => {},
+      complete: () => {
+        this.locationInstanceLocalService.locationInstance = null
+        this.router.navigate(["/map"])
+      }
+    })
+
+
+
+
   }
 }

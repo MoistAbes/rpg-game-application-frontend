@@ -7,7 +7,11 @@ import {CenterModalComponent} from '../../../../global/components/center-modal/c
 import {ZoneModel} from '../../../../models/zone-model';
 import {LocationModel} from '../../../../models/location-model';
 import {ZoneApiService} from '../../../../services/api/zone-api.service';
-import {ZoneDbService} from '../../../../global/services/zone-db.service';
+import {TimeCycleModel} from '../../../../models/time-cycle-model';
+import {LocationInstanceApiService} from '../../../../services/api/location-instance-api.service';
+import {JwtService} from '../../../../global/services/jwt.service';
+import {LocationInstanceModel} from '../../../../models/location-instance-model';
+import {LocationInstanceLocalService} from '../../../../global/services/location-instance-local.service';
 
 @Component({
   selector: 'app-map-page',
@@ -40,9 +44,13 @@ export class MapPageComponent implements OnInit ,AfterViewInit {
   private transformOriginX: number | null = null;
   private transformOriginY: number | null = null;
 
+  timeCycle: TimeCycleModel | undefined;
+
   zones: ZoneModel[] = [];
   selectedZone: ZoneModel | undefined;
   selectedLocation: LocationModel | undefined;
+
+  locationInstance: LocationInstanceModel | undefined;
 
   isDragging = false;
   startX = 0;
@@ -58,19 +66,51 @@ export class MapPageComponent implements OnInit ,AfterViewInit {
 
 
   constructor(private zoneApiService: ZoneApiService,
-              private zoneDBService: ZoneDbService,
+              // private zoneDBService: ZoneDbService,
+              private locationInstanceApiService: LocationInstanceApiService,
+              private locationInstanceLocalService: LocationInstanceLocalService,
+              private jwtService: JwtService,
               private router: Router) {}
 
   ngOnInit(): void {
-    this.loadZones();
-  }
 
+    //ToDO przydałoby sie jakos flage ogarnac która bedzie nam mówiła ze jest instancja zeby nie pobierac niepotrzebnie
+    this.loadLocationInstance();
+
+
+    this.loadTimeCycle();
+    this.loadZones();
+
+  }
 
   ngAfterViewInit() {
     this.mapWidth = this.mapImg.nativeElement.width;
     this.mapHeight = this.mapImg.nativeElement.height;
     console.log(`Map Size: ${this.mapWidth} x ${this.mapHeight}`);
   }
+
+  loadLocationInstance() {
+    this.locationInstanceApiService.getLocationInstanceByCharacterId(parseInt(this.jwtService.getCharacterIdFromToken())).subscribe({
+      next: location => {
+        console.log("location isntance : ", location)
+        this.locationInstance = location;
+        // console.log("location isntance: ", this.locationInstance);
+      },
+      error: err => {},
+      complete: () => {
+
+        //jesli istnieje atkualnie instancja
+        if (this.locationInstance != null) {
+
+          this.locationInstanceLocalService.locationInstance = this.locationInstance;
+
+          this.router.navigate(['/location', this.locationInstance?.location?.zone?.name, this.locationInstance?.location?.name]);
+        }
+
+      }
+    })
+  }
+
 
   @HostListener('wheel', ['$event'])
   onWheel(event: WheelEvent): void {
@@ -113,7 +153,7 @@ export class MapPageComponent implements OnInit ,AfterViewInit {
   updateZoom(): void {
     const mapContainer = document.querySelector('.map-container') as HTMLElement;
 
-    console.log("offset x: ", this.offsetX + " | offset y: " + this.offsetY + " | scale: ", this.scale);
+    // console.log("offset x: ", this.offsetX + " | offset y: " + this.offsetY + " | scale: ", this.scale);
     // Apply the new zoom level and translation
     mapContainer.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px) scale(${this.scale})`;
   }
@@ -222,6 +262,18 @@ export class MapPageComponent implements OnInit ,AfterViewInit {
 
   }
 
+  loadTimeCycle(): void {
+    this.zoneApiService.getTimeCycle().subscribe({
+      next: data => {
+        this.timeCycle = new TimeCycleModel(data);
+        console.log("loaded time cycle: ", this.timeCycle)
+      },
+      error: error => {
+        console.log(error);
+      },
+      complete: () => {}
+    })
+  }
 
   loadZones(): void {
     this.zoneApiService.getZones().subscribe({
@@ -243,13 +295,34 @@ export class MapPageComponent implements OnInit ,AfterViewInit {
   }
 
   async onEnterLocationClicked() {
-    if (this.selectedZone && this.selectedLocation) {
-      await this.zoneDBService.setZone(this.selectedZone);
-      await this.zoneDBService.setLocation(this.selectedLocation);
-    }
+
+    //tworzymy location instance
+    this.locationInstanceApiService.createLocationInstance(this.selectedLocation!.id!, parseInt(this.jwtService.getCharacterIdFromToken())).subscribe({
+      next: generatedLocationInstance => {
+        this.locationInstance = generatedLocationInstance
+
+        //musimy tak robic bo przy tworzeniu isntancji dostajemy wartosci locacji jako null
+        this.selectedZone?.locations.forEach((location: LocationModel) => {
+          if (location.id == this.locationInstance?.location?.id) {
+            this.locationInstance.location = location;
+            this.locationInstance.location.zone = this.selectedZone;
+            this.locationInstance.location.zone!.locations = []
+          }
+        })
+
+        this.locationInstanceLocalService.locationInstance = this.locationInstance
 
 
-    this.router.navigate(['/location', this.selectedZone?.name, this.selectedLocation?.name]);
+
+        console.log("generated location instance: ", this.locationInstance)
+      },
+      error: error => {},
+      complete: () => {
+        this.router.navigate(['/location', this.selectedZone?.name, this.selectedLocation?.name]);
+
+      }
+    })
+
   }
 
   onLocationClicked(selectedLocation: LocationModel) {
@@ -265,6 +338,17 @@ export class MapPageComponent implements OnInit ,AfterViewInit {
 
   onZoneImgLoad(zoneIndex: number) {
     this.isZoneImgLoadedList[zoneIndex] = true;
+  }
 
+
+  getZoneIconPath(zoneStatus: string) {
+    let iconPath = '/map/';
+
+    switch (zoneStatus) {
+      case 'Cursed': {
+        return iconPath + "cursed-zone-icon.svg";
+      }
+      default: return iconPath + "cursed-zone-icon.svg";
+    }
   }
 }

@@ -1,0 +1,49 @@
+.enemy-types-container {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px;
+}
+
+.current-types {
+  margin-bottom: 20px;
+}
+
+.types-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.type-item {
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #ff4444;
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: 14px;
+}
+
+.remove-btn:hover {
+  color: #ff0000;
+}
+
+.type-selector {
+  margin-top: 15px;
+}
+
+h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
